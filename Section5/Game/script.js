@@ -11,14 +11,16 @@ const again = document.querySelector(".again");
 
 const defaultScore = 20;
 let scoreNumber = defaultScore;
-let questionNumber = randomSecret();
-let highscoreNumber = 0;
+
+const defaultHightscore = 0;
+let highscoreNumber = defaultHightscore;
 
 function randomSecret() {
     return Math.trunc(Math.random() * 20) + 1;
 }
+let questionNumber = randomSecret();
 
-function reset() {
+function init() {
     guessMessage.textContent = "Начни угадывать";
     question.textContent = "???";
     score.textContent = scoreNumber = defaultScore;
@@ -46,19 +48,11 @@ function checkNumber() {
     }
 
     if (guessNumber > questionNumber) {
-        more();
+        guessMessage.textContent = "Слишком много";
     } else if (guessNumber < questionNumber) {
-        less();
+        guessMessage.textContent = "Слишком мало";
     }
     score.textContent = --scoreNumber;
-}
-
-function less() {
-    guessMessage.textContent = "Слишком мало";
-}
-
-function more() {
-    guessMessage.textContent = "Слишком много";
 }
 
 function won() {
@@ -77,4 +71,4 @@ function lose() {
 }
 
 check.addEventListener("click", checkNumber);
-again.addEventListener("click", reset);
+again.addEventListener("click", init);
