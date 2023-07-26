@@ -27,6 +27,7 @@ function reset() {
     if (isFinished) {
         isFinished = false;
         players[playerNumber].classList.remove("player--winner");
+        players[playerNumber].classList.add("player--active");
     } else {
         dice.classList.add("hidden");
     }
