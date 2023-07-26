@@ -17,7 +17,7 @@ const scores = [score0, score1];
 const finalScore = 20;
 let isFinished, totalScore, playerNumber, currentScore;
 
-function reset() {
+function init() {
     isFinished = false;
 
     totalScore = [0, 0];
@@ -79,7 +79,7 @@ function save() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", reset);
-btnNew.addEventListener("click", reset);
+document.addEventListener("DOMContentLoaded", init);
+btnNew.addEventListener("click", init);
 btnRoll.addEventListener("click", roll);
 btnHold.addEventListener("click", save);
