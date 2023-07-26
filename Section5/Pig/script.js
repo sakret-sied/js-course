@@ -15,29 +15,23 @@ const players = [player0, player1];
 const currents = [current0, current1];
 const scores = [score0, score1];
 const finalScore = 20;
-let playerNumber = 0;
-let currentScore = 0;
-let totalScore, isFinished;
+let isFinished, totalScore, playerNumber, currentScore;
 
 function reset() {
+    isFinished = false;
+
     totalScore = [0, 0];
     score0.textContent = totalScore[0];
     score1.textContent = totalScore[1];
 
-    if (isFinished) {
-        isFinished = false;
-        players[playerNumber].classList.remove("player--winner");
-        players[playerNumber].classList.add("player--active");
-    } else {
-        dice.classList.add("hidden");
-    }
+    currentScore = 0;
+    current0.textContent = currentScore;
+    current1.textContent = currentScore;
 
-    if (playerNumber === 1) {
-        switchPlayer();
-    } else {
-        currentScore = 0;
-        currents[playerNumber].textContent = currentScore;
-    }
+    playerNumber = 0;
+    player0.classList.remove("player--active", "player--winner");
+    player1.classList.remove("player--active", "player--winner");
+    player0.classList.add("player--active");
 }
 
 function roll() {
