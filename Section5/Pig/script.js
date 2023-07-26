@@ -32,6 +32,8 @@ function reset() {
     player0.classList.remove("player--active", "player--winner");
     player1.classList.remove("player--active", "player--winner");
     player0.classList.add("player--active");
+
+    dice.classList.add("hidden");
 }
 
 function roll() {
