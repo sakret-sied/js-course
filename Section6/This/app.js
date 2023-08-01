@@ -18,14 +18,35 @@ const getAgeArrow = (birthYear) => {
 getAgeArrow(2001);
 
 // Object
+var firstName = "Jack";
+
 const user187 = {
+    firstName: "YouRa",
     birthYear: 1974,
     getAge: function () {
         console.log(new Date().getFullYear() - this.birthYear);
         console.log(this);
+
+        const self = this;
+        const isAdult = function () {
+            console.log(`Self`);
+            console.log(new Date().getFullYear() - self.birthYear >= 18);
+        };
+        isAdult();
+
+        const isAdultArr = () => {
+            console.log("Arrow");
+            console.log(new Date().getFullYear() - this.birthYear >= 18);
+        };
+        isAdultArr();
+    },
+    sayGreeting: () => {
+        console.log(`Hello, I'm ${this.firstName}`);
     },
 };
 user187.getAge();
+user187.sayGreeting();
+console.log(this.firstName);
 
 // Another object
 const user188 = {
