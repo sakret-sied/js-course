@@ -7,10 +7,6 @@ const japaneseRestaurant = {
     appetizers: ["Seaweed salad", "Tempura shrimp", "Edamame", "Sushi rice"],
     mainMenu: ["Sushi", "Ramen", "Tempura"],
 
-    orderFood: function (appetizersIndex, mainMenuIndex) {
-        return [this.appetizers[appetizersIndex], this.mainMenu[mainMenuIndex]];
-    },
-
     orderSushi: function (ing1, ing2, ing3) {
         console.log(`Your ingridients: ${ing1}, ${ing2}, ${ing3}`);
     },
