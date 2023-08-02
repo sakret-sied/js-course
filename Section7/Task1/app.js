@@ -78,7 +78,7 @@ function printGoals(...somePlayers) {
 printGoals("Mingueza", "Messi", "Modrich", "Nacho");
 printGoals(...game.scored);
 
-// 7
+// 71
 console.log(
     (team1 === team2 && "Ничья") ||
         (team1 < team2 && "Первая команда") ||
