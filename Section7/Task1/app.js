@@ -32,7 +32,7 @@ const game = {
         ],
     ],
     score: "2:1",
-    scored: ["Toyota Land KroosEr", "Benzema", "Mingueza"],
+    scored: ["Kroos", "Benzema", "Mingueza"],
     date: "Apr 10th, 2021",
     odds: {
         team1: 1.48,
