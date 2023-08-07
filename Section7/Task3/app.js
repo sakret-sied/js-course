@@ -15,16 +15,13 @@ const events = new Map([
 
 // 1
 const gameEvents = [...new Set(events.values())];
-console.log(gameEvents);
+console.log("1:", gameEvents);
 
 // 2
 for (const [minute, event] of events) {
-    console.log(minute, event);
-    if (minute >= 75 && event === "Yellow card") {
-        events.delete(minute);
-    }
+    minute >= 75 && event === "Yellow card" && events.delete(minute);
 }
-console.log(events);
+console.log("2:", events);
 
 // 3
 const getTimeFromNumber = (number) => {
@@ -40,12 +37,14 @@ const getGameTime = (map) => {
 const avarageNumber = getGameTime(events) / events.size;
 const avarageTime = getTimeFromNumber(avarageNumber);
 console.log(
+    "3:",
     `Avarage time is ${avarageTime.get("minutes")} minutes ${avarageTime.get(
         "seconds"
     )} seconds (${avarageNumber})`
 );
 
 // 4
+console.log("4:");
 for (const [key, value] of events) {
     console.log(`[${key <= 45 ? "FIRST" : "SECOND"} HALF] ${key}: ${value}`);
 }

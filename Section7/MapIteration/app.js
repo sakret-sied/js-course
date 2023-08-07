@@ -14,10 +14,11 @@ const question = new Map([
 ]);
 
 let text = question.get("question");
+const textConcat = (line) => {
+    text += line;
+};
 for (const [key, value] of question) {
-    if (typeof key === "number") {
-        text += `\n${key}. ${value}`;
-    }
+    typeof key === "number" && textConcat(`\n${key}. ${value}`);
 }
 const answer = Number(prompt(text));
 alert(question.get(question.get("currectAnswer") === answer));
