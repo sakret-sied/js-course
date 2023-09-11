@@ -13,12 +13,10 @@ const survey = {
             "(Enter option number)";
         const answer = Number(prompt(text));
 
-        if (
-            typeof answer === "number" &&
-            Object.keys(this.answers).hasOwnProperty(answer)
-        ) {
+        typeof answer === "number" &&
+            Object.keys(this.answers).hasOwnProperty(answer) &&
             this.answers[answer]++;
-        }
+
         this.printResults("string");
     },
     printResults(type = "array") {
