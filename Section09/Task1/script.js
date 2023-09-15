@@ -8,10 +8,13 @@ const julia2 = [8, 2, 10, 1, 2, 5, 6, 3, 1, 4];
 const verifyCats = function (catsJane, catsJulia) {
     console.log('Список кошек:');
 
+    // const onlyCats = catsJane.slice(1, -1);
     const onlyCats = catsJane.slice();
-    onlyCats.splice(0, 1).slice(-1, 1);
+    onlyCats.splice(0, 1);
+    onlyCats.splice(-1);
 
     const moreCats = [...onlyCats, ...catsJulia];
+    console.log(moreCats);
     moreCats.forEach(function (age, index) {
         const info = age < 2 ? 'ещё котёнок' : `взрослая, ей ${age} лет`;
         console.log(`Кошка № ${index + 1} ${info}`);
