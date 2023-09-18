@@ -96,7 +96,13 @@ const createNicknames = function (accounts) {
   });
 };
 
-// Execute
+const displayBalance = function (transactions) {
+  const balance = transactions.reduce((prev, curr) => prev + curr, 0);
+  labelBalance.textContent = balance;
+};
 
-displayTransactions(account1.transactions);
+// Execute
+const account = account1;
+displayTransactions(account.transactions);
 createNicknames(accounts);
+displayBalance(account.transactions);
