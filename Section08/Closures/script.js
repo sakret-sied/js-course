@@ -4,19 +4,19 @@
 
 // console.log('Lession 1');
 // let safeBooking = function (text) {
-//     let passengerCount = 0;
+//   let passengerCount = 0;
 
-//     return function (text = 'increase') {
-//         switch (text) {
-//             case 'increase':
-//                 passengerCount++;
-//                 break;
-//             case 'reset':
-//                 passengerCount = 0;
-//                 break;
-//         }
-//         console.log(`${passengerCount} passengers`);
-//     };
+//   return function (text = 'increase') {
+//     switch (text) {
+//       case 'increase':
+//         passengerCount++;
+//         break;
+//       case 'reset':
+//         passengerCount = 0;
+//         break;
+//     }
+//     console.log(`${passengerCount} passengers`);
+//   };
 // };
 
 // const booker = safeBooking();
@@ -36,17 +36,17 @@
 // let f1;
 
 // const f2 = function () {
-//     const x = 11;
-//     f1 = function () {
-//         console.log(x ** 2);
-//     };
+//   const x = 11;
+//   f1 = function () {
+//     console.log(x ** 2);
+//   };
 // };
 
 // const f3 = function () {
-//     const y = 12;
-//     f1 = function () {
-//         console.log(y ** 2);
-//     };
+//   const y = 12;
+//   f1 = function () {
+//     console.log(y ** 2);
+//   };
 // };
 
 // f2();
@@ -60,14 +60,14 @@
 // Example 2
 
 const boardPassengers = function (passengerNumber, secondsBeforeBoarding) {
-    const passengersInGroup = passengerNumber / 2;
+  const passengersInGroup = passengerNumber / 2;
 
-    setTimeout(function () {
-        console.log(`All ${passengerNumber} passengers are now boarding`);
-        console.log(`Each group contains ${passengersInGroup} passengers`);
-    }, secondsBeforeBoarding * 1000);
+  setTimeout(function () {
+    console.log(`All ${passengerNumber} passengers are now boarding`);
+    console.log(`Each group contains ${passengersInGroup} passengers`);
+  }, secondsBeforeBoarding * 1000);
 
-    console.log(`The boarding will start in ${secondsBeforeBoarding} seconds`);
+  console.log(`The boarding will start in ${secondsBeforeBoarding} seconds`);
 };
 
 const passengersInGroup = 1500;

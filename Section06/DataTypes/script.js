@@ -7,8 +7,8 @@ console.log(a);
 console.log(b);
 
 const x = {
-    foo: 'bar',
-    a: 1,
+  foo: 'bar',
+  a: 1,
 };
 const y = x;
 y.a = 2;
@@ -21,10 +21,10 @@ lastName = 'White';
 console.log(lastName, oldLastName);
 
 const jane = {
-    firstName: 'Jane',
-    lastName: 'Brown',
-    age: 21,
-    familyMembers: ['Jack', 'Bob', 'Greta'],
+  firstName: 'Jane',
+  lastName: 'Brown',
+  age: 21,
+  familyMembers: ['Jack', 'Bob', 'Greta'],
 };
 const marriedJane = Object.assign({}, jane);
 marriedJane.lastName = 'White';

@@ -13,23 +13,23 @@ console.log(decSum(1, 2));
 // console.log(arrSum(1, 2));
 
 function decSum(a, b) {
-    return a + b;
+  return a + b;
 }
 const expSum = function (a, b) {
-    return a + b;
+  return a + b;
 };
 var arrSum = (a, b) => a + b;
 
 // Example
 
 if (!isUserValid) {
-    deleteUser();
+  deleteUser();
 }
 
 var isUserValid = true;
 
 function deleteUser() {
-    console.log('User is deleted!');
+  console.log('User is deleted!');
 }
 
 var a = 1;

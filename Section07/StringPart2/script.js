@@ -11,7 +11,7 @@ const passengerName = 'liNDa';
 const passengerNameLower = passengerName.toLowerCase();
 console.log('passengerNameLower =', passengerNameLower);
 const passengerNameFixed =
-    passengerNameLower[0].toUpperCase() + passengerNameLower.slice(1);
+  passengerNameLower[0].toUpperCase() + passengerNameLower.slice(1);
 console.log('passengerNameFixed =', passengerNameFixed);
 
 // Email validation
@@ -28,7 +28,7 @@ const ticketPriceEU = '197,23€';
 const ticketPriceUS = ticketPriceEU.replace(',', '.').replace('€', '$');
 console.log(ticketPriceUS);
 const announcement =
-    'All passengers of flight EG234 come to boarding door 18. Boarding door 18!';
+  'All passengers of flight EG234 come to boarding door 18. Boarding door 18!';
 console.log(announcement.replace('door', 'gate'));
 console.log(announcement.replaceAll('door', 'gate'));
 console.log(announcement.replace(/door/g, 'gate'));
@@ -43,11 +43,11 @@ airplane.startsWith('Boeing') && console.log('You gonna fly on Boeng!');
 
 // Example
 const checkLuggage = function (luggage) {
-    const luggageLower = luggage.toLowerCase();
-    (luggageLower.includes('knife') ||
-        luggageLower.includes('gun') ||
-        console.log('Welcome to the board')) &&
-        console.log('You are not allowed on board');
+  const luggageLower = luggage.toLowerCase();
+  (luggageLower.includes('knife') ||
+    luggageLower.includes('gun') ||
+    console.log('Welcome to the board')) &&
+    console.log('You are not allowed on board');
 };
 
 checkLuggage('Food, jeans, socks and Swiss Knife');

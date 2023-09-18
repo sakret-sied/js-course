@@ -40,8 +40,8 @@ console.log(typeof someArray);
 // Object Literal
 
 const someObjectLiteral = {
-    first: '12',
-    second: 'second',
+  first: '12',
+  second: 'second',
 };
 console.log(typeof someObjectLiteral);
 

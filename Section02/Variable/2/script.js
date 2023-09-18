@@ -5,9 +5,9 @@ console.log(name);
 const color = 'red';
 
 const user = {
-    name: 'Jack',
-    gender: 'male',
-    age: 24,
+  name: 'Jack',
+  gender: 'male',
+  age: 24,
 };
 console.log(user);
 
@@ -16,9 +16,9 @@ user.age = 25;
 console.log(user);
 
 // user = {
-//     name: 'Kayle',
-//     gender: 'male',
-//     age: 21,
+//   name: 'Kayle',
+//   gender: 'male',
+//   age: 21,
 // }
 
 const colors = ['red', 'orange', 'green'];

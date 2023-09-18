@@ -6,7 +6,7 @@ console.log(1 && 'Hello!');
 console.log('hey' && 34 && 0 && 44 && null);
 
 if (japaneseRestaurant.orderRamen) {
-    japaneseRestaurant.orderRamen('Something');
+  japaneseRestaurant.orderRamen('Something');
 }
 
 japaneseRestaurant.orderRamen && japaneseRestaurant.orderRamen('Something');
@@ -22,8 +22,8 @@ console.log(undefined || '' || 0 || 'Hey!' || 23 || null);
 japaneseRestaurant.guestsNumber = 0;
 
 const guests = japaneseRestaurant.guestsNumber
-    ? japaneseRestaurant.guestsNumber
-    : 5;
+  ? japaneseRestaurant.guestsNumber
+  : 5;
 console.log(guests);
 
 const guests1 = japaneseRestaurant.guestsNumber || 5;

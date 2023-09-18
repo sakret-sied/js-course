@@ -4,9 +4,9 @@ let tips = [];
 let total = [];
 
 data.forEach(function (element) {
-    const tip = calculateTips(element);
-    tips.push(tip);
-    total.push(element + tip);
+  const tip = calculateTips(element);
+  tips.push(tip);
+  total.push(element + tip);
 });
 
 console.log(data);

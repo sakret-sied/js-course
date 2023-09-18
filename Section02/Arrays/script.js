@@ -9,19 +9,19 @@ const color7 = 'violet';
 console.log(color2);
 
 rainbowColors = [
-    'red',
-    'orange',
-    'yellow',
-    'green',
-    'blue',
-    'indigo',
-    'violet',
+  'red',
+  'orange',
+  'yellow',
+  'green',
+  'blue',
+  'indigo',
+  'violet',
 ];
 
 rainbowColors[rainbowColors.length] = 'dark blue';
 
 rainbowColors.forEach((element) => {
-    console.log(element);
+  console.log(element);
 });
 console.log('\n');
 console.log(rainbowColors[Math.floor(Math.random() * rainbowColors.length)]);

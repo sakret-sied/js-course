@@ -4,5 +4,5 @@ let hasCertificate = false;
 const passExam = true;
 
 if (passExam) {
-    hasCertificate = true;
+  hasCertificate = true;
 }

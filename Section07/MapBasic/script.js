@@ -7,11 +7,11 @@ restaurant.set(2, 'Paris, France');
 console.log(restaurant.set(3, 'Kiev, Ukraine'));
 
 restaurant
-    .set('categories', ['Japanese', 'Sushi', 'Vegetarian', 'Organic'])
-    .set('open', 10)
-    .set('close', 23)
-    .set(true, `${restaurant.get('name')} is open`)
-    .set(false, `${restaurant.get('name')} is close`);
+  .set('categories', ['Japanese', 'Sushi', 'Vegetarian', 'Organic'])
+  .set('open', 10)
+  .set('close', 23)
+  .set(true, `${restaurant.get('name')} is open`)
+  .set(false, `${restaurant.get('name')} is close`);
 console.log(restaurant.get('name'));
 console.log(restaurant.get(true));
 console.log(restaurant.get(3));
@@ -19,10 +19,10 @@ console.log(restaurant.get(3));
 const currentTime = new Date().getHours();
 console.log(currentTime);
 console.log(
-    restaurant.get(
-        currentTime > restaurant.get('open') &&
-            currentTime < restaurant.get('close')
-    )
+  restaurant.get(
+    currentTime > restaurant.get('open') &&
+      currentTime < restaurant.get('close')
+  )
 );
 console.log(restaurant.has(false));
 console.log(restaurant.delete(2));

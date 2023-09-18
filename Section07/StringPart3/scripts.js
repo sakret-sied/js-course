@@ -13,12 +13,12 @@ const text = ['Mr.', firstName, lastName.toUpperCase()].join(' ');
 console.log(text);
 
 const capitalizeName = function (name) {
-    const names = name.split(' ');
-    const namesCapitalize = [];
-    for (const part of names) {
-        namesCapitalize.push(part.replace(part[0], part[0].toUpperCase()));
-    }
-    console.log(namesCapitalize.join(' '));
+  const names = name.split(' ');
+  const namesCapitalize = [];
+  for (const part of names) {
+    namesCapitalize.push(part.replace(part[0], part[0].toUpperCase()));
+  }
+  console.log(namesCapitalize.join(' '));
 };
 
 capitalizeName('youra allakhverdov');
@@ -32,9 +32,9 @@ console.log(message.padStart(27, '-').padEnd(37, '-'));
 // Mask card
 
 const maskCreditCart = function (cardNumber) {
-    const stringNumber = cardNumber + '';
-    const last4 = stringNumber.slice(-4);
-    console.log(last4.padStart(stringNumber.length, '*'));
+  const stringNumber = cardNumber + '';
+  const last4 = stringNumber.slice(-4);
+  console.log(last4.padStart(stringNumber.length, '*'));
 };
 
 maskCreditCart(2131232132142132);
@@ -45,6 +45,6 @@ maskCreditCart('21321321312312312312312312321');
 const greeting = 'Hi!';
 console.log(greeting.repeat(50));
 const howMuchYouLoveSomebody = function (loveNumber) {
-    console.log(`I love you ${'♡'.repeat(loveNumber)}`);
+  console.log(`I love you ${'♡'.repeat(loveNumber)}`);
 };
 howMuchYouLoveSomebody(100);

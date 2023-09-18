@@ -8,6 +8,6 @@ true && false;
 
 const number = 10;
 if (number > 0) {
-    const text = 'The number is positive.';
-    console.log(text);
+  const text = 'The number is positive.';
+  console.log(text);
 }

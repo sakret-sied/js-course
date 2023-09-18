@@ -2,17 +2,17 @@
 
 const bookings = [];
 const makeBooking = function (
-    flightNumber,
-    passengersNum = 1,
-    price = 99 * passengersNum
+  flightNumber,
+  passengersNum = 1,
+  price = 99 * passengersNum
 ) {
-    const booking = {
-        flightNumber,
-        passengersNum,
-        price,
-    };
-    console.log(booking);
-    bookings.push(booking);
+  const booking = {
+    flightNumber,
+    passengersNum,
+    price,
+  };
+  console.log(booking);
+  bookings.push(booking);
 };
 
 makeBooking('QE123');

@@ -1,14 +1,14 @@
 'use strict';
 
 const removeSpaces = function (text) {
-    return text.replace(/ /g, '');
+  return text.replace(/ /g, '');
 };
 const upperFirstWord = function (text) {
-    const [first, ...others] = text.split(' ');
-    return [first.toUpperCase(), ...others].join(' ');
+  const [first, ...others] = text.split(' ');
+  return [first.toUpperCase(), ...others].join(' ');
 };
 const converter = function (str, fun) {
-    console.log(fun(str));
+  console.log(fun(str));
 };
 
 converter('Hello New World!', removeSpaces);

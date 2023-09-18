@@ -7,9 +7,9 @@ console.log(canYouBuyIt);
 
 let canYouBuyIt1;
 if (money >= cost) {
-    canYouBuyIt1 = 'You can buy it.';
+  canYouBuyIt1 = 'You can buy it.';
 } else {
-    canYouBuyIt1 = 'You can not buy it.';
+  canYouBuyIt1 = 'You can not buy it.';
 }
 
 console.log(canYouBuyIt1);

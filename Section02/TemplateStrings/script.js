@@ -7,23 +7,23 @@ let carHtml;
 
 // Old approach(before ES6)
 carHtml =
-    '<h3>' +
-    'Car Description' +
-    '</h3>' +
-    '<ul>' +
-    '<li>Brand: ' +
-    brand +
-    '</li>' +
-    '<li>Model: ' +
-    model +
-    '</li>' +
-    '<li>Color: ' +
-    color +
-    '</li>' +
-    '<li>Year: ' +
-    year +
-    '</li>' +
-    '</ul>';
+  '<h3>' +
+  'Car Description' +
+  '</h3>' +
+  '<ul>' +
+  '<li>Brand: ' +
+  brand +
+  '</li>' +
+  '<li>Model: ' +
+  model +
+  '</li>' +
+  '<li>Color: ' +
+  color +
+  '</li>' +
+  '<li>Year: ' +
+  year +
+  '</li>' +
+  '</ul>';
 
 // New approach(template literals)
 carHtml = `<h3>Car Description</h3>
@@ -39,6 +39,6 @@ carHtml = `<h3>Car Description</h3>
 carHtml += '<h4>Хахаха</h4>';
 
 function getDoorsNumber() {
-    return 5;
+  return 5;
 }
 document.body.innerHTML = carHtml;

@@ -19,14 +19,14 @@ console.log(orders);
 
 // Remove duplicates
 const mealIngridients = [
-    'Rice',
-    'Pepper',
-    'Garlic',
-    'Pepper',
-    'Garlic',
-    'Meat',
-    'Meat',
-    'Garlic',
+  'Rice',
+  'Pepper',
+  'Garlic',
+  'Pepper',
+  'Garlic',
+  'Meat',
+  'Meat',
+  'Garlic',
 ];
 console.log(new Set(mealIngridients).size);
 console.log(new Set('allakhverdov yuriy').size);

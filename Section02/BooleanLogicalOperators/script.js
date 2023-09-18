@@ -21,7 +21,7 @@ console.log(!false);
 const hasMoney = true;
 const isAdult = true;
 if (hasMoney && isAdult) {
-    console.log('You can buy the drink.');
+  console.log('You can buy the drink.');
 } else {
-    console.log("You can't buy the drink.");
+  console.log("You can't buy the drink.");
 }

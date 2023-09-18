@@ -1,15 +1,15 @@
 'use strict';
 
 const japaneseRestaurant = {
-    name: 'Banzai',
-    location: '108 Markham Woods Rd, Longwood, USA',
-    categories: ['Japanese', 'Sushi', 'Vegetarian', 'Organic'],
-    appetizers: ['Seaweed salad', 'Tempura shrimp', 'Edamame', 'Sushi rice'],
-    mainMenu: ['Sushi', 'Ramen', 'Tempura'],
+  name: 'Banzai',
+  location: '108 Markham Woods Rd, Longwood, USA',
+  categories: ['Japanese', 'Sushi', 'Vegetarian', 'Organic'],
+  appetizers: ['Seaweed salad', 'Tempura shrimp', 'Edamame', 'Sushi rice'],
+  mainMenu: ['Sushi', 'Ramen', 'Tempura'],
 
-    orderSushi: function (ing1, ing2, ing3) {
-        console.log(`Your ingridients: ${ing1}, ${ing2}, ${ing3}`);
-    },
+  orderSushi: function (ing1, ing2, ing3) {
+    console.log(`Your ingridients: ${ing1}, ${ing2}, ${ing3}`);
+  },
 };
 
 const arr = [1, 2, 3];
@@ -40,18 +40,18 @@ console.log(...greeting);
 
 // Properties
 // const ingridients = [
-//     prompt(`Ingridient 1 for your sushi?`),
-//     prompt(`Ingridient 2 for your sushi?`),
-//     prompt(`Ingridient 3 for your sushi?`),
+//   prompt(`Ingridient 1 for your sushi?`),
+//   prompt(`Ingridient 2 for your sushi?`),
+//   prompt(`Ingridient 3 for your sushi?`),
 // ];
 // console.log(ingridients);
 // japaneseRestaurant.orderSushi(...ingridients);
 
 // Objects
 const newJapaneseRestaurant = {
-    foundationDate: 2011,
-    ...japaneseRestaurant,
-    owner: 'Suzuki',
+  foundationDate: 2011,
+  ...japaneseRestaurant,
+  owner: 'Suzuki',
 };
 newJapaneseRestaurant.name = 'Suzuki Sushi';
 console.log(newJapaneseRestaurant);

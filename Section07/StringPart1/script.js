@@ -17,24 +17,24 @@ console.log("airplane.lastIndexOf(' ') =", airplane.lastIndexOf(' '));
 console.log("(airline.lastIndexOf('7') =", airline.lastIndexOf('7'));
 
 console.log(
-    "airplane.slice(airplane.indexOf('7')) =",
-    airplane.slice(airplane.indexOf('7'))
+  "airplane.slice(airplane.indexOf('7')) =",
+  airplane.slice(airplane.indexOf('7'))
 );
 console.log(
-    "airplane.slice(0, airplane.indexOf(' ')) =",
-    airplane.slice(0, airplane.indexOf(' '))
+  "airplane.slice(0, airplane.indexOf(' ')) =",
+  airplane.slice(0, airplane.indexOf(' '))
 );
 console.log(
-    "airplane.slice(airplane.lastIndexOf(' '') + 1) =",
-    airplane.slice(airplane.lastIndexOf(' ') + 1)
+  "airplane.slice(airplane.lastIndexOf(' '') + 1) =",
+  airplane.slice(airplane.lastIndexOf(' ') + 1)
 );
 
 console.log('airline.slice(-2)', airline.slice(-2));
 console.log('airline.slice(2, -2)', airline.slice(2, -2));
 
 const checkMiddleSeat = (seat) => {
-    // B and E are middle seat
-    console.log(`${seat} ${'BE'.includes(seat.slice(-1))}`);
+  // B and E are middle seat
+  console.log(`${seat} ${'BE'.includes(seat.slice(-1))}`);
 };
 
 checkMiddleSeat('21A');

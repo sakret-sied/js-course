@@ -7,13 +7,13 @@ console.log(birthYear1);
 const age1 = getAge1(birthYear1);
 console.log(age1);
 function getAge1(birthYear) {
-    return new Date().getFullYear() - birthYear;
+  return new Date().getFullYear() - birthYear;
 }
 
 // 2
 
 const getAge2 = function (birthYear) {
-    return new Date().getFullYear() - birthYear;
+  return new Date().getFullYear() - birthYear;
 };
 const birthYear2 = prompt('Enter birth year');
 console.log(birthYear2);
