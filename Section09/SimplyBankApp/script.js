@@ -63,28 +63,10 @@ const inputLoginPin = document.querySelector('.login__input--pin');
 const inputTransferTo = document.querySelector('.form__input--to');
 const inputTransferAmount = document.querySelector('.form__input--amount');
 const inputLoanAmount = document.querySelector('.form__input--loan-amount');
-const inputCloseUsername = document.querySelector('.form__input--user');
+const inputCloseNickname = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
-
-const displayTransactions = function (transactions) {
-  containerTransactions.innerHTML = '';
-
-  transactions.forEach(function (trans, index) {
-    const transType = trans > 0 ? 'deposit' : 'withdrawal';
-
-    const transactionRow = `
-    <div class="transactions__row">
-      <div class="transactions__type transactions__type--${transType}">
-        ${index + 1} ${transType}
-      </div>
-      <div class="transactions__value">${trans}</div>
-    </div>
-    `;
-    containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
-  });
-};
 
 const createNicknames = function (accounts) {
   accounts.forEach(function (account) {
@@ -96,13 +78,137 @@ const createNicknames = function (accounts) {
   });
 };
 
-const displayBalance = function (transactions) {
-  const balance = transactions.reduce((prev, curr) => prev + curr, 0);
-  labelBalance.textContent = balance;
+const transfer = function (e) {
+  e.preventDefault();
+
+  const transferAmount = Number(inputTransferAmount.value);
+  const recipientNickname = inputTransferTo.value;
+  const recipientAcoount = accounts.find(
+    (account) => account.nickname === recipientNickname
+  );
+
+  inputTransferTo.value = '';
+  inputTransferAmount.value = '';
+
+  if (
+    transferAmount > 0 &&
+    currentAccount.balance >= transferAmount &&
+    recipientAcoount &&
+    currentAccount.nickname !== recipientAcoount.nickname
+  ) {
+    currentAccount.transactions.push(-transferAmount);
+    recipientAcoount.transactions.push(transferAmount);
+
+    updateUI();
+  }
+};
+
+const close = function (e) {
+  e.preventDefault();
+
+  if (
+    inputCloseNickname.value === currentAccount.nickname &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    accounts.splice(
+      accounts.findIndex(
+        (account) => account.nickname === currentAccount.nickname
+      ),
+      1
+    );
+    currentAccount = undefined;
+
+    containerApp.style.opacity = 0;
+    inputCloseNickname.value = '';
+    inputClosePin.value = '';
+    labelWelcome.textContent = 'Войдите в свой аккаунт';
+  }
+};
+
+const login = function (e) {
+  e.preventDefault();
+
+  const account = accounts.find(
+    (account) => account.nickname === inputLoginUsername.value
+  );
+  if (account?.pin === Number(inputLoginPin.value)) {
+    containerApp.style.opacity = 100;
+    labelWelcome.textContent = `Рады, что вы снова с нами, ${
+      account.userName.split(' ')[0]
+    }!`;
+
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+    inputLoginPin.blur();
+    currentAccount = account;
+  } else {
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Данные некорректны!';
+    currentAccount = {
+      userName: '',
+      transactions: [],
+      interest: 0,
+      pin: 0,
+    };
+  }
+
+  updateUI();
+};
+
+const updateUI = function () {
+  displayTransactions(currentAccount);
+  displayBalance(currentAccount);
+  displayTotal(currentAccount);
+};
+
+const displayTransactions = function ({ transactions }) {
+  containerTransactions.innerHTML = '';
+
+  transactions.forEach(function (trans, index) {
+    const transType = trans > 0 ? 'deposit' : 'withdrawal';
+
+    const transactionRow = `
+    <div class="transactions__row">
+      <div class="transactions__type transactions__type--${transType}">
+        ${index + 1} ${transType}
+      </div>
+      <div class="transactions__value">${trans}$</div>
+    </div>
+    `;
+    containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
+  });
+};
+
+const displayBalance = function (account) {
+  account.balance = account.transactions.reduce((prev, curr) => prev + curr, 0);
+  labelBalance.textContent = `${account.balance}$`;
+};
+
+const displayTotal = function ({ transactions, interest }) {
+  const depositesTotal = transactions
+    .filter((trans) => trans > 0)
+    .reduce((acc, trans) => acc + trans, 0);
+  labelSumIn.textContent = `${depositesTotal}$`;
+
+  const withdrawalsTotal = transactions
+    .filter((trans) => trans < 0)
+    .reduce((acc, trans) => acc + trans, 0);
+  labelSumOut.textContent = `${withdrawalsTotal}$`;
+
+  const interestTotal = transactions
+    .filter((trans) => trans > 0)
+    .map((depos) => (depos * interest) / 100)
+    .filter((interes, _, arr) => {
+      return interes >= 5;
+    })
+    .reduce((acc, interest) => acc + interest, 0);
+  labelSumInterest.textContent = `${interestTotal.toFixed(2)}$`;
 };
 
 // Execute
-const account = account1;
-displayTransactions(account.transactions);
+
+let currentAccount;
 createNicknames(accounts);
-displayBalance(account.transactions);
+btnLogin.addEventListener('click', login);
+btnTransfer.addEventListener('click', transfer);
+btnClose.addEventListener('click', close);
