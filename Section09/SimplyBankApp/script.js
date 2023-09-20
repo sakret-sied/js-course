@@ -68,7 +68,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
 
-const createNicknames = function (accounts) {
+const createNicknames = function () {
   accounts.forEach(function (account) {
     account.nickname = account.userName
       .toLowerCase()
@@ -76,6 +76,36 @@ const createNicknames = function (accounts) {
       .map((word) => word[0])
       .join('');
   });
+};
+
+const login = function (e) {
+  e.preventDefault();
+
+  const account = accounts.find(
+    (account) => account.nickname === inputLoginUsername.value
+  );
+  if (account?.pin === Number(inputLoginPin.value)) {
+    containerApp.style.opacity = 100;
+    labelWelcome.textContent = `Рады, что вы снова с нами, ${
+      account.userName.split(' ')[0]
+    }!`;
+
+    inputLoginUsername.value = '';
+    inputLoginPin.value = '';
+    inputLoginPin.blur();
+    currentAccount = account;
+  } else {
+    containerApp.style.opacity = 0;
+    labelWelcome.textContent = 'Данные некорректны!';
+    currentAccount = {
+      userName: '',
+      transactions: [],
+      interest: 0,
+      pin: 0,
+    };
+  }
+
+  updateUI();
 };
 
 const transfer = function (e) {
@@ -125,34 +155,28 @@ const close = function (e) {
   }
 };
 
-const login = function (e) {
+const loan = function (e) {
   e.preventDefault();
 
-  const account = accounts.find(
-    (account) => account.nickname === inputLoginUsername.value
-  );
-  if (account?.pin === Number(inputLoginPin.value)) {
-    containerApp.style.opacity = 100;
-    labelWelcome.textContent = `Рады, что вы снова с нами, ${
-      account.userName.split(' ')[0]
-    }!`;
-
-    inputLoginUsername.value = '';
-    inputLoginPin.value = '';
-    inputLoginPin.blur();
-    currentAccount = account;
-  } else {
-    containerApp.style.opacity = 0;
-    labelWelcome.textContent = 'Данные некорректны!';
-    currentAccount = {
-      userName: '',
-      transactions: [],
-      interest: 0,
-      pin: 0,
-    };
+  const loanAmount = Number(inputLoanAmount.value);
+  if (
+    loanAmount > 0 &&
+    currentAccount.transactions.some(
+      (trans) => trans >= (loanAmount * 10) / 100
+    )
+  ) {
+    currentAccount.transactions.push(loanAmount);
+    updateUI();
   }
 
-  updateUI();
+  inputLoanAmount.value = '';
+};
+
+const sort = function (e) {
+  e.preventDefault();
+
+  transactionsSort = !transactionsSort;
+  displayTransactions(currentAccount, transactionsSort);
 };
 
 const updateUI = function () {
@@ -161,12 +185,15 @@ const updateUI = function () {
   displayTotal(currentAccount);
 };
 
-const displayTransactions = function ({ transactions }) {
+const displayTransactions = function ({ transactions }, sort = false) {
   containerTransactions.innerHTML = '';
 
-  transactions.forEach(function (trans, index) {
-    const transType = trans > 0 ? 'deposit' : 'withdrawal';
+  const transactionsSort = sort
+    ? transactions.slice().sort((x, y) => x - y)
+    : transactions;
 
+  transactionsSort.forEach(function (trans, index) {
+    const transType = trans > 0 ? 'deposit' : 'withdrawal';
     const transactionRow = `
     <div class="transactions__row">
       <div class="transactions__type transactions__type--${transType}">
@@ -207,8 +234,11 @@ const displayTotal = function ({ transactions, interest }) {
 
 // Execute
 
-let currentAccount;
-createNicknames(accounts);
+let currentAccount,
+  transactionsSort = false;
+createNicknames();
 btnLogin.addEventListener('click', login);
 btnTransfer.addEventListener('click', transfer);
 btnClose.addEventListener('click', close);
+btnLoan.addEventListener('click', loan);
+btnSort.addEventListener('click', sort);
