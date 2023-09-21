@@ -55,7 +55,7 @@ const containerTransactions = document.querySelector('.transactions');
 const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
-const btnClose = document.querySelector('.form__btn--close');
+const btnExit = document.querySelector('.form__btn--close');
 const btnSort = document.querySelector('.btn--sort');
 
 const inputLoginUsername = document.querySelector('.login__input--user');
@@ -93,10 +93,12 @@ const login = function (e) {
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
     inputLoginPin.blur();
+
     currentAccount = account;
   } else {
     containerApp.style.opacity = 0;
     labelWelcome.textContent = 'Данные некорректны!';
+
     currentAccount = {
       userName: '',
       transactions: [],
@@ -133,7 +135,7 @@ const transfer = function (e) {
   }
 };
 
-const close = function (e) {
+const exit = function (e) {
   e.preventDefault();
 
   if (
@@ -166,6 +168,7 @@ const loan = function (e) {
     )
   ) {
     currentAccount.transactions.push(loanAmount);
+
     updateUI();
   }
 
@@ -239,6 +242,6 @@ let currentAccount,
 createNicknames();
 btnLogin.addEventListener('click', login);
 btnTransfer.addEventListener('click', transfer);
-btnClose.addEventListener('click', close);
+btnExit.addEventListener('click', exit);
 btnLoan.addEventListener('click', loan);
 btnSort.addEventListener('click', sort);
