@@ -245,3 +245,14 @@ btnTransfer.addEventListener('click', transfer);
 btnExit.addEventListener('click', exit);
 btnLoan.addEventListener('click', loan);
 btnSort.addEventListener('click', sort);
+
+// Example
+
+const logoImage = document.querySelector('.logo');
+logoImage.addEventListener('click', function () {
+  const transactionsUI = document.querySelectorAll('.transactions__value');
+  const transactionsUiArray = Array.from(transactionsUI, (elem) =>
+    Number(elem.textContent.replace(/[^\d-]/g, ''))
+  );
+  console.log(transactionsUiArray);
+});
