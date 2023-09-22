@@ -70,9 +70,6 @@ const account4 = {
     '2020-11-15T10:45:23.907Z',
     '2021-01-22T12:17:46.255Z',
     '2021-02-12T15:14:06.486Z',
-    '2021-03-09T11:42:26.371Z',
-    '2021-05-21T07:43:59.331Z',
-    '2021-06-22T15:21:20.814Z',
   ],
   currency: 'EUR',
   locale: 'fr-CA',
@@ -89,9 +86,6 @@ const account5 = {
     '2020-11-15T10:45:23.907Z',
     '2021-01-22T12:17:46.255Z',
     '2021-02-12T15:14:06.486Z',
-    '2021-03-09T11:42:26.371Z',
-    '2021-05-21T07:43:59.331Z',
-    '2021-06-22T15:21:20.814Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -138,6 +132,14 @@ const createNicknames = function () {
   });
 };
 
+const getDate = function (date) {
+  const day = `${date.getDate()}`.padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 const login = function (e) {
   e.preventDefault();
 
@@ -149,6 +151,8 @@ const login = function (e) {
     labelWelcome.textContent = `Рады, что вы снова с нами, ${
       account.userName.split(' ')[0]
     }!`;
+
+    labelDate.textContent = getDate(new Date());
 
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
@@ -189,7 +193,10 @@ const transfer = function (e) {
     currentAccount.nickname !== recipientAcoount.nickname
   ) {
     currentAccount.transactions.push(-transferAmount);
+    currentAccount.transactionsDates.push(new Date().toISOString());
+
     recipientAcoount.transactions.push(transferAmount);
+    recipientAcoount.transactionsDates.push(new Date().toISOString());
 
     updateUI();
   }
@@ -228,6 +235,7 @@ const loan = function (e) {
     )
   ) {
     currentAccount.transactions.push(loanAmount);
+    currentAccount.transactionsDates.push(new Date().toISOString());
 
     updateUI();
   }
@@ -248,7 +256,10 @@ const updateUI = function () {
   displayTotal(currentAccount);
 };
 
-const displayTransactions = function ({ transactions }, sort = false) {
+const displayTransactions = function (
+  { transactions, transactionsDates },
+  sort = false
+) {
   containerTransactions.innerHTML = '';
 
   const transactionsSort = sort
@@ -257,11 +268,14 @@ const displayTransactions = function ({ transactions }, sort = false) {
 
   transactionsSort.forEach(function (trans, index) {
     const transType = trans > 0 ? 'deposit' : 'withdrawal';
+    const date = new Date(transactionsDates[index]);
+    const transDate = getDate(date);
     const transactionRow = `
     <div class="transactions__row">
       <div class="transactions__type transactions__type--${transType}">
         ${index + 1} ${transType}
       </div>
+      <div class="transactions__date">${transDate}</div>
       <div class="transactions__value">${trans.toFixed(2)}$</div>
     </div>
     `;
@@ -299,7 +313,9 @@ const displayTotal = function ({ transactions, interest }) {
 
 let currentAccount,
   transactionsSort = false;
+
 createNicknames();
+
 btnLogin.addEventListener('click', login);
 btnTransfer.addEventListener('click', transfer);
 btnExit.addEventListener('click', exit);
