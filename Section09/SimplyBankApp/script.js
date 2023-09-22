@@ -14,8 +14,8 @@ const account1 = {
     '2021-01-22T12:17:46.255Z',
     '2021-02-12T15:14:06.486Z',
     '2021-03-09T11:42:26.371Z',
-    '2021-05-21T07:43:59.331Z',
-    '2021-06-22T15:21:20.814Z',
+    '2023-09-21T15:21:20.814Z',
+    '2023-09-22T15:21:20.814Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -122,6 +122,34 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
 
+const getDate = function (date, isText = true) {
+  const day = `${date.getDate()}`.padStart(2, '0');
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const year = date.getFullYear();
+  const daysPassed = getPassedDays(new Date(), date);
+
+  if (isText) {
+    switch (daysPassed) {
+      case 0:
+        return 'Сегодня';
+      case 1:
+        return 'Вчера';
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+      case 6:
+      case 7:
+        return `${daysPassed} дней`;
+    }
+  }
+
+  return `${day}/${month}/${year}`;
+};
+
+const getPassedDays = (startDate, endDate) =>
+  Math.round(Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24)));
+
 const createNicknames = function () {
   accounts.forEach(function (account) {
     account.nickname = account.userName
@@ -130,14 +158,6 @@ const createNicknames = function () {
       .map((word) => word[0])
       .join('');
   });
-};
-
-const getDate = function (date) {
-  const day = `${date.getDate()}`.padStart(2, '0');
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const year = date.getFullYear();
-
-  return `${day}/${month}/${year}`;
 };
 
 const login = function (e) {
@@ -151,8 +171,7 @@ const login = function (e) {
     labelWelcome.textContent = `Рады, что вы снова с нами, ${
       account.userName.split(' ')[0]
     }!`;
-
-    labelDate.textContent = getDate(new Date());
+    labelDate.textContent = getDate(new Date(), false);
 
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
@@ -268,8 +287,8 @@ const displayTransactions = function (
 
   transactionsSort.forEach(function (trans, index) {
     const transType = trans > 0 ? 'deposit' : 'withdrawal';
-    const date = new Date(transactionsDates[index]);
-    const transDate = getDate(date);
+    const transDate = getDate(new Date(transactionsDates[index]));
+
     const transactionRow = `
     <div class="transactions__row">
       <div class="transactions__type transactions__type--${transType}">

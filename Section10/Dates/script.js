@@ -38,19 +38,33 @@ console.log(new Date(7 * 24 * 60 * 60 * 1000));
 
 // Work with dates
 
-const futureDate = new Date(2222, 1, 13, 11, 28, 59);
-console.log(futureDate);
-console.log(futureDate.getFullYear());
-console.log(futureDate.getMonth());
-console.log(futureDate.getDate());
-console.log(futureDate.getDay());
-console.log(futureDate.getHours());
-console.log(futureDate.getMinutes());
-console.log(futureDate.getSeconds());
-console.log(futureDate.toISOString());
-console.log(futureDate.getTime());
+const futureDate1 = new Date(2222, 1, 13, 11, 28, 59);
+console.log(futureDate1);
+console.log(futureDate1.getFullYear());
+console.log(futureDate1.getMonth());
+console.log(futureDate1.getDate());
+console.log(futureDate1.getDay());
+console.log(futureDate1.getHours());
+console.log(futureDate1.getMinutes());
+console.log(futureDate1.getSeconds());
+console.log(futureDate1.toISOString());
+console.log(futureDate1.getTime());
 console.log(new Date(7956084539000));
 console.log(Date.now());
 
-futureDate.setFullYear(2223);
-console.log(futureDate);
+futureDate1.setFullYear(2223);
+console.log(futureDate1);
+
+// New lession
+console.log('---------');
+
+const futureDate2 = new Date(2222, 1, 13, 11, 28, 59);
+console.log(Number(futureDate2));
+console.log(+futureDate2);
+console.log(-futureDate2);
+
+const getPassedDays = (startDate, endDate) =>
+  Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+const days = getPassedDays(new Date(2021, 9, 1), new Date(2021, 9, 12));
+console.log(days);
