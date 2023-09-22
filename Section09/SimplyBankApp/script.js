@@ -4,7 +4,7 @@
 
 const account1 = {
   userName: 'Cecil Ireland',
-  transactions: [500, 250, -300, 5000, -850, -110, -170, 1100],
+  transactions: [500.32, 250, -300.92, 5000, -850, -110.18, -170, 1100],
   interest: 1.5,
   pin: 1111,
 };
@@ -84,7 +84,7 @@ const login = function (e) {
   const account = accounts.find(
     (account) => account.nickname === inputLoginUsername.value
   );
-  if (account?.pin === Number(inputLoginPin.value)) {
+  if (account?.pin === +inputLoginPin.value) {
     containerApp.style.opacity = 100;
     labelWelcome.textContent = `Рады, что вы снова с нами, ${
       account.userName.split(' ')[0]
@@ -113,7 +113,7 @@ const login = function (e) {
 const transfer = function (e) {
   e.preventDefault();
 
-  const transferAmount = Number(inputTransferAmount.value);
+  const transferAmount = +inputTransferAmount.value;
   const recipientNickname = inputTransferTo.value;
   const recipientAcoount = accounts.find(
     (account) => account.nickname === recipientNickname
@@ -140,7 +140,7 @@ const exit = function (e) {
 
   if (
     inputCloseNickname.value === currentAccount.nickname &&
-    Number(inputClosePin.value) === currentAccount.pin
+    +inputClosePin.value === currentAccount.pin
   ) {
     accounts.splice(
       accounts.findIndex(
@@ -160,7 +160,7 @@ const exit = function (e) {
 const loan = function (e) {
   e.preventDefault();
 
-  const loanAmount = Number(inputLoanAmount.value);
+  const loanAmount = Math.floor(inputLoanAmount.value);
   if (
     loanAmount > 0 &&
     currentAccount.transactions.some(
@@ -202,7 +202,7 @@ const displayTransactions = function ({ transactions }, sort = false) {
       <div class="transactions__type transactions__type--${transType}">
         ${index + 1} ${transType}
       </div>
-      <div class="transactions__value">${trans}$</div>
+      <div class="transactions__value">${trans.toFixed(2)}$</div>
     </div>
     `;
     containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
@@ -211,19 +211,19 @@ const displayTransactions = function ({ transactions }, sort = false) {
 
 const displayBalance = function (account) {
   account.balance = account.transactions.reduce((prev, curr) => prev + curr, 0);
-  labelBalance.textContent = `${account.balance}$`;
+  labelBalance.textContent = `${account.balance.toFixed(2)}$`;
 };
 
 const displayTotal = function ({ transactions, interest }) {
   const depositesTotal = transactions
     .filter((trans) => trans > 0)
     .reduce((acc, trans) => acc + trans, 0);
-  labelSumIn.textContent = `${depositesTotal}$`;
+  labelSumIn.textContent = `${depositesTotal.toFixed(2)}$`;
 
   const withdrawalsTotal = transactions
     .filter((trans) => trans < 0)
     .reduce((acc, trans) => acc + trans, 0);
-  labelSumOut.textContent = `${withdrawalsTotal}$`;
+  labelSumOut.textContent = `${withdrawalsTotal.toFixed(2)}$`;
 
   const interestTotal = transactions
     .filter((trans) => trans > 0)
@@ -248,11 +248,21 @@ btnSort.addEventListener('click', sort);
 
 // Example
 
-const logoImage = document.querySelector('.logo');
-logoImage.addEventListener('click', function () {
-  const transactionsUI = document.querySelectorAll('.transactions__value');
-  const transactionsUiArray = Array.from(transactionsUI, (elem) =>
-    Number(elem.textContent.replace(/[^\d-]/g, ''))
-  );
-  console.log(transactionsUiArray);
-});
+// const logoImage = document.querySelector('.logo');
+// logoImage.addEventListener('click', function () {
+//   const transactionsUI = document.querySelectorAll('.transactions__value');
+//   const transactionsUiArray = Array.from(
+//     transactionsUI,
+//     (elem) => +elem.textContent.replace(/[^\d-]/g, '')
+//   );
+//   console.log(transactionsUiArray);
+// });
+
+// const logoImage = document.querySelector('.logo');
+// logoImage.addEventListener('click', function () {
+//   document.querySelectorAll('.transactions__row').forEach(function (row, i) {
+//     if (i % 4 === 0) {
+//       row.style.backgroundColor = 'grey';
+//     }
+//   });
+// });
