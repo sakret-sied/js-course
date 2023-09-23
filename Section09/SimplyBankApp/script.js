@@ -127,37 +127,6 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
 
-const getDate = function (date, locale = navigator.language, isText = false) {
-  const daysPassed = getPassedDays(new Date(), date);
-  if (!isText || daysPassed > 7) {
-    return new Intl.DateTimeFormat(locale).format(date);
-  }
-  switch (daysPassed) {
-    case 0:
-      return 'Сегодня';
-    case 1:
-      return 'Вчера';
-    case 2:
-    case 3:
-    case 4:
-      return `${daysPassed} дня`;
-  }
-};
-
-const getCurrency = (value, currency, locale) => {
-  if (!value && !currency && !locale) {
-    return '';
-  }
-
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency,
-  }).format(value);
-};
-
-const getPassedDays = (startDate, endDate) =>
-  Math.round(Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24)));
-
 const createNicknames = function () {
   accounts.forEach(function (account) {
     account.nickname = account.userName
@@ -166,27 +135,6 @@ const createNicknames = function () {
       .map((word) => word[0])
       .join('');
   });
-};
-
-const startLogoutTimer = function () {
-  const logOutTimerCallback = () => {
-    const minutes = String(Math.trunc(time / 60)).padStart(2, '0');
-    const seconds = String(Math.trunc(time % 60)).padStart(2, '0');
-    labelTimer.textContent = `${minutes}:${seconds}`;
-
-    if (time-- === 0) {
-      clearInterval(logOutTimer);
-      currentAccount = { ...accountEmpty };
-
-      updateUI();
-    }
-  };
-
-  let time = 10;
-  logOutTimerCallback();
-  const logOutTimer = setInterval(logOutTimerCallback, 1000);
-
-  return logOutTimer;
 };
 
 const login = function (e) {
@@ -208,9 +156,6 @@ const login = function (e) {
 
     currentAccount = account;
   } else {
-    containerApp.style.opacity = 0;
-    labelWelcome.textContent = 'Данные некорректны!';
-
     currentAccount = { ...accountEmpty };
   }
 
@@ -279,6 +224,7 @@ const loan = function (e) {
   e.preventDefault();
 
   const loanAmount = Math.floor(inputLoanAmount.value);
+
   if (
     loanAmount > 0 &&
     currentAccount.transactions.some(
@@ -308,33 +254,15 @@ const sort = function (e) {
   displayTransactions(currentAccount, transactionsSort);
 };
 
-const updateUI = function () {
-  displayTransactions(currentAccount);
-  displayBalance(currentAccount);
-  displayTotal(currentAccount);
-
-  if (currentAccount.userName === '') {
-    labelTimer.textContent = '00:00';
-    labelDate.textContent = '';
-
-    containerApp.style.opacity = 0;
-    inputCloseNickname.value = '';
-    inputClosePin.value = '';
-    labelWelcome.textContent = 'Войдите в свой аккаунт';
-  }
-};
-
 const displayTransactions = function ({ transactions, locale }, sort = false) {
   containerTransactions.innerHTML = '';
 
   const transactionsSort = sort
     ? transactions.slice().sort((x, y) => x.value - y.value)
     : transactions;
-
   transactionsSort.forEach(function (trans, index) {
     const transType = trans.value > 0 ? 'deposit' : 'withdrawal';
     const transDate = getDate(new Date(trans.datetime), locale, true);
-
     const transactionRow = `
     <div class="transactions__row">
       <div class="transactions__type transactions__type--${transType}">
@@ -385,6 +313,76 @@ const displayTotal = function ({ transactions, interest, currency, locale }) {
     .reduce((acc, interest) => acc + interest, 0);
   labelSumInterest.textContent = getCurrency(interestTotal, currency, locale);
 };
+
+const updateUI = function () {
+  displayTransactions(currentAccount);
+  displayBalance(currentAccount);
+  displayTotal(currentAccount);
+  if (currentAccount.userName === '') {
+    emptyUI();
+  }
+};
+
+const emptyUI = function () {
+  containerApp.style.opacity = 0;
+  labelWelcome.textContent = 'Войдите в свой аккаунт';
+  labelDate.textContent = '';
+  labelTimer.textContent = '00:00';
+  inputCloseNickname.value = '';
+  inputClosePin.value = '';
+};
+
+const startLogoutTimer = function () {
+  const logOutTimerCallback = () => {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, '0');
+    const seconds = String(Math.trunc(time % 60)).padStart(2, '0');
+    labelTimer.textContent = `${minutes}:${seconds}`;
+
+    if (time-- === 0) {
+      clearInterval(logOutTimer);
+      currentAccount = { ...accountEmpty };
+      updateUI();
+    }
+  };
+
+  let time = 10;
+  logOutTimerCallback();
+  const logOutTimer = setInterval(logOutTimerCallback, 1000);
+  return logOutTimer;
+};
+
+const getDate = (date, locale = navigator.language, isText = false) => {
+  const daysPassed = getPassedDays(new Date(), date);
+
+  if (isText) {
+    switch (daysPassed) {
+      case 0:
+        return 'Сегодня';
+      case 1:
+        return 'Вчера';
+      case 2:
+      case 3:
+      case 4:
+        return `${daysPassed} дня`;
+    }
+  }
+
+  return new Intl.DateTimeFormat(locale).format(date);
+};
+
+const getCurrency = (value, currency, locale) => {
+  if (!value && !currency && !locale) {
+    return '';
+  }
+
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
+};
+
+const getPassedDays = (startDate, endDate) =>
+  Math.round(Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24)));
 
 // Execute
 
