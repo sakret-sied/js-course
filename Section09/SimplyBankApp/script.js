@@ -2,6 +2,15 @@
 
 // Simply Bank App
 
+const accountEmpty = {
+  userName: '',
+  interest: 0,
+  pin: 0,
+  transactions: [],
+  currency: '',
+  locale: '',
+};
+
 const account1 = {
   userName: 'Cecil Ireland',
   interest: 1.5,
@@ -135,11 +144,16 @@ const getDate = function (date, locale = navigator.language, isText = false) {
   }
 };
 
-const getCurrency = (value, currency, locale) =>
-  new Intl.NumberFormat(locale, {
+const getCurrency = (value, currency, locale) => {
+  if (!value && !currency && !locale) {
+    return '';
+  }
+
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
   }).format(value);
+};
 
 const getPassedDays = (startDate, endDate) =>
   Math.round(Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24)));
@@ -152,6 +166,27 @@ const createNicknames = function () {
       .map((word) => word[0])
       .join('');
   });
+};
+
+const startLogoutTimer = function () {
+  const logOutTimerCallback = () => {
+    const minutes = String(Math.trunc(time / 60)).padStart(2, '0');
+    const seconds = String(Math.trunc(time % 60)).padStart(2, '0');
+    labelTimer.textContent = `${minutes}:${seconds}`;
+
+    if (time-- === 0) {
+      clearInterval(logOutTimer);
+      currentAccount = { ...accountEmpty };
+
+      updateUI();
+    }
+  };
+
+  let time = 10;
+  logOutTimerCallback();
+  const logOutTimer = setInterval(logOutTimerCallback, 1000);
+
+  return logOutTimer;
 };
 
 const login = function (e) {
@@ -176,15 +211,14 @@ const login = function (e) {
     containerApp.style.opacity = 0;
     labelWelcome.textContent = 'Данные некорректны!';
 
-    currentAccount = {
-      userName: '',
-      transactions: [],
-      interest: 0,
-      pin: 0,
-    };
+    currentAccount = { ...accountEmpty };
   }
 
   updateUI();
+  if (currentLogOutTimer) {
+    clearInterval(currentLogOutTimer);
+  }
+  currentLogOutTimer = startLogoutTimer();
 };
 
 const transfer = function (e) {
@@ -217,6 +251,8 @@ const transfer = function (e) {
     });
 
     updateUI();
+    clearInterval(currentLogOutTimer);
+    currentLogOutTimer = startLogoutTimer();
   }
 };
 
@@ -233,12 +269,9 @@ const exit = function (e) {
       ),
       1
     );
-    currentAccount = undefined;
-
-    containerApp.style.opacity = 0;
-    inputCloseNickname.value = '';
-    inputClosePin.value = '';
-    labelWelcome.textContent = 'Войдите в свой аккаунт';
+    currentAccount = { ...accountEmpty };
+    updateUI();
+    clearInterval(currentLogOutTimer);
   }
 };
 
@@ -252,16 +285,20 @@ const loan = function (e) {
       (trans) => trans.value >= (loanAmount * 10) / 100
     )
   ) {
-    currentAccount.transactions.push({
-      datetime: new Date().toISOString(),
-      currency: currentAccount.currency,
-      value: loanAmount,
-    });
+    setTimeout(function () {
+      currentAccount.transactions.push({
+        datetime: new Date().toISOString(),
+        currency: currentAccount.currency,
+        value: loanAmount,
+      });
 
-    updateUI();
+      updateUI();
+    }, 3000);
   }
 
   inputLoanAmount.value = '';
+  clearInterval(currentLogOutTimer);
+  currentLogOutTimer = startLogoutTimer();
 };
 
 const sort = function (e) {
@@ -275,6 +312,16 @@ const updateUI = function () {
   displayTransactions(currentAccount);
   displayBalance(currentAccount);
   displayTotal(currentAccount);
+
+  if (currentAccount.userName === '') {
+    labelTimer.textContent = '00:00';
+    labelDate.textContent = '';
+
+    containerApp.style.opacity = 0;
+    inputCloseNickname.value = '';
+    inputClosePin.value = '';
+    labelWelcome.textContent = 'Войдите в свой аккаунт';
+  }
 };
 
 const displayTransactions = function ({ transactions, locale }, sort = false) {
@@ -342,6 +389,7 @@ const displayTotal = function ({ transactions, interest, currency, locale }) {
 // Execute
 
 let currentAccount,
+  currentLogOutTimer,
   transactionsSort = false;
 
 createNicknames();
