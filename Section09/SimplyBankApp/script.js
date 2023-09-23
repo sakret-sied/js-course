@@ -125,7 +125,7 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseNickname = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-// Functions
+// Events
 
 const createNicknames = function () {
   accounts.forEach(function (account) {
@@ -253,6 +253,8 @@ const sort = function (e) {
   transactionsSort = !transactionsSort;
   displayTransactions(currentAccount, transactionsSort);
 };
+
+// Functions
 
 const displayTransactions = function ({ transactions, locale }, sort = false) {
   containerTransactions.innerHTML = '';
