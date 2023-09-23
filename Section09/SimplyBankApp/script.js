@@ -122,30 +122,28 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 // Functions
 
-const getDate = function (date, isText = true) {
-  const day = `${date.getDate()}`.padStart(2, '0');
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const year = date.getFullYear();
+const getDate = function (date, locale = navigator.language, isText = false) {
   const daysPassed = getPassedDays(new Date(), date);
-
-  if (isText) {
-    switch (daysPassed) {
-      case 0:
-        return 'Сегодня';
-      case 1:
-        return 'Вчера';
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      case 7:
-        return `${daysPassed} дней`;
-    }
+  if (!isText || daysPassed > 7) {
+    return new Intl.DateTimeFormat(locale).format(date);
   }
-
-  return `${day}/${month}/${year}`;
+  switch (daysPassed) {
+    case 0:
+      return 'Сегодня';
+    case 1:
+      return 'Вчера';
+    case 2:
+    case 3:
+    case 4:
+      return `${daysPassed} дня`;
+  }
 };
+
+const getCurrency = (locale, currency, value) =>
+  new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency,
+  }).format(value);
 
 const getPassedDays = (startDate, endDate) =>
   Math.round(Math.abs((endDate - startDate) / (1000 * 60 * 60 * 24)));
@@ -171,7 +169,7 @@ const login = function (e) {
     labelWelcome.textContent = `Рады, что вы снова с нами, ${
       account.userName.split(' ')[0]
     }!`;
-    labelDate.textContent = getDate(new Date(), false);
+    labelDate.textContent = getDate(new Date());
 
     inputLoginUsername.value = '';
     inputLoginPin.value = '';
@@ -276,7 +274,7 @@ const updateUI = function () {
 };
 
 const displayTransactions = function (
-  { transactions, transactionsDates },
+  { transactions, transactionsDates, currency, locale },
   sort = false
 ) {
   containerTransactions.innerHTML = '';
@@ -287,7 +285,7 @@ const displayTransactions = function (
 
   transactionsSort.forEach(function (trans, index) {
     const transType = trans > 0 ? 'deposit' : 'withdrawal';
-    const transDate = getDate(new Date(transactionsDates[index]));
+    const transDate = getDate(new Date(transactionsDates[index]), locale, true);
 
     const transactionRow = `
     <div class="transactions__row">
@@ -295,7 +293,11 @@ const displayTransactions = function (
         ${index + 1} ${transType}
       </div>
       <div class="transactions__date">${transDate}</div>
-      <div class="transactions__value">${trans.toFixed(2)}$</div>
+      <div class="transactions__value">${getCurrency(
+        locale,
+        currency,
+        trans
+      )}</div>
     </div>
     `;
     containerTransactions.insertAdjacentHTML('afterbegin', transactionRow);
@@ -304,19 +306,23 @@ const displayTransactions = function (
 
 const displayBalance = function (account) {
   account.balance = account.transactions.reduce((prev, curr) => prev + curr, 0);
-  labelBalance.textContent = `${account.balance.toFixed(2)}$`;
+  labelBalance.textContent = getCurrency(
+    account.locale,
+    account.currency,
+    account.balance
+  );
 };
 
-const displayTotal = function ({ transactions, interest }) {
+const displayTotal = function ({ transactions, interest, currency, locale }) {
   const depositesTotal = transactions
     .filter((trans) => trans > 0)
     .reduce((acc, trans) => acc + trans, 0);
-  labelSumIn.textContent = `${depositesTotal.toFixed(2)}$`;
+  labelSumIn.textContent = getCurrency(locale, currency, depositesTotal);
 
   const withdrawalsTotal = transactions
     .filter((trans) => trans < 0)
     .reduce((acc, trans) => acc + trans, 0);
-  labelSumOut.textContent = `${withdrawalsTotal.toFixed(2)}$`;
+  labelSumOut.textContent = getCurrency(locale, currency, withdrawalsTotal);
 
   const interestTotal = transactions
     .filter((trans) => trans > 0)
@@ -325,7 +331,7 @@ const displayTotal = function ({ transactions, interest }) {
       return interes >= 5;
     })
     .reduce((acc, interest) => acc + interest, 0);
-  labelSumInterest.textContent = `${interestTotal.toFixed(2)}$`;
+  labelSumInterest.textContent = getCurrency(locale, currency, interestTotal);
 };
 
 // Execute

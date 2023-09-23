@@ -68,3 +68,6 @@ const getPassedDays = (startDate, endDate) =>
 
 const days = getPassedDays(new Date(2021, 9, 1), new Date(2021, 9, 12));
 console.log(days);
+
+// A
+console.log('---------');
