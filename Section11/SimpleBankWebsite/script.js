@@ -50,16 +50,15 @@ btnScrollTo.addEventListener('click', function () {
 
 // Smooth navigation
 
-document
-  .querySelector('.nav__links')
-  .addEventListener('click', function ({ target: t }) {
-    e.preventDefault();
-    if (!t.classList.contains('nav__link')) {
-      return;
-    }
-    const href = t.getAttribute('href');
-    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
-  });
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  const target = e.target;
+  if (!target.classList.contains('nav__link')) {
+    return;
+  }
+  const href = target.getAttribute('href');
+  document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+});
 
 // Tabs
 
@@ -349,13 +348,13 @@ dotContainer.addEventListener('click', function ({ target: t }) {
 
 // // Event Propagation
 
-// function getRand(min, max) {
+// function getRandomIntInclusive(min, max) {
 //   min = Math.ceil(min);
 //   max = Math.floor(max);
 //   return Math.floor(Math.random() * (max - min + 1) + min);
 // }
 // const getRandomColor = () =>
-//   `rgb(${getRand(0, 255)}, ${getRand(0, 255)}, ${getRand(0, 255)})`;
+//   `rgb(${getRandomIntInclusive(0, 255)}, ${getRandomIntInclusive(0, 255)}, ${getRandomIntInclusive(0, 255)})`;
 // const backgroundRandom = function (e) {
 //   e.preventDefault();
 //   this.style.backgroundColor = getRandomColor();

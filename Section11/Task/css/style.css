@@ -168,12 +168,12 @@
   margin-bottom: 2.4rem;
   color: #888;
 }
-.logos {
+.logo-container {
   display: flex;
   justify-content: space-around;
 }
 /* ! делаем изображения "чёрными" filter:brightness(0), потом серыми opacity:50% */
-.logos img {
+.logo-container img {
   height: 3.2rem;
   /* filter: brightness(0);
   opacity: 50%; */
@@ -750,10 +750,6 @@
   gap: 86px;
 }
 
-.slide--1 {
-  transform: translateX(100%);
-}
-
 .carousel img {
   height: 200px;
   border-radius: 8px;
@@ -823,7 +819,7 @@
   width: 24px;
   stroke: #087f5b;
 }
-.dots {
+.dot-container {
   position: absolute;
   bottom: 0;
   left: 50%;
