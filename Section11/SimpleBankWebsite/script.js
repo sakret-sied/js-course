@@ -12,6 +12,11 @@ const tabs = document.querySelectorAll('.operations__tab');
 const tabContainer = document.querySelector('.operations__tab-container');
 const tabContents = document.querySelectorAll('.operations__content');
 const nav = document.querySelector('.nav');
+const slides = document.querySelectorAll('.slide');
+const btnLeft = document.querySelector('.slider__btn--left');
+const btnRight = document.querySelector('.slider__btn--right');
+const slider = document.querySelector('.slider');
+const dotContainer = document.querySelector('.dots');
 
 const openModalWindow = function (e) {
   e.preventDefault();
@@ -39,25 +44,27 @@ document.addEventListener('keydown', function (e) {
 
 // Scrolling
 
-btnScrollTo.addEventListener('click', function (e) {
+btnScrollTo.addEventListener('click', function () {
   section1.scrollIntoView({ behavior: 'smooth' });
 });
 
 // Smooth navigation
 
-document.querySelector('.nav__links').addEventListener('click', function (e) {
-  e.preventDefault();
-  if (!e.target.classList.contains('nav__link')) {
-    return;
-  }
-  const href = e.target.getAttribute('href');
-  document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
-});
+document
+  .querySelector('.nav__links')
+  .addEventListener('click', function ({ target: t }) {
+    e.preventDefault();
+    if (!t.classList.contains('nav__link')) {
+      return;
+    }
+    const href = t.getAttribute('href');
+    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+  });
 
 // Tabs
 
-tabContainer.addEventListener('click', function (e) {
-  const clickedButton = e.target.closest('.operations__tab');
+tabContainer.addEventListener('click', function ({ target: t }) {
+  const clickedButton = t.closest('.operations__tab');
   if (!clickedButton) {
     return;
   }
@@ -77,11 +84,11 @@ tabContainer.addEventListener('click', function (e) {
 
 // Fade out
 
-const navLinkHoverAnimation = function (e) {
-  if (!e.target.classList.contains('nav__link')) {
+const navLinkHoverAnimation = function ({ target: t }) {
+  if (!t.classList.contains('nav__link')) {
     return;
   }
-  const linkOver = e.target;
+  const linkOver = t;
   const SiblingLinks = linkOver
     .closest('.nav__links')
     .querySelectorAll('.nav__link');
@@ -134,12 +141,85 @@ const sectionObserver = new IntersectionObserver(appearanceSection, {
 });
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
 
-////////////////////////////////////////////
-///////////////// Examples /////////////////
-////////////////////////////////////////////
+// Lazy loading
+
+const lazyImages = document.querySelectorAll('img[data-src]');
+const loadImages = function (entries, observer) {
+  const entry = entries[0];
+  if (!entry.isIntersecting) {
+    return;
+  }
+  entry.target.src = entry.target.dataset.src;
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+  observer.unobserve(entry.target);
+};
+const lazyImagesObserver = new IntersectionObserver(loadImages, {
+  root: null,
+  threshold: 0.5,
+  rootMargin: '300px',
+});
+lazyImages.forEach((image) => lazyImagesObserver.observe(image));
+
+// Slider
+
+let currentSlide = 0;
+const minSlide = 0;
+const maxSlide = slides.length - 1;
+
+const selectSlide = function (slide = 0) {
+  currentSlide = slide;
+  moveToSlide();
+  activateCurrentDot();
+};
+const moveToSlide = function () {
+  slides.forEach(
+    (s, index) =>
+      (s.style.transform = `translateX(${(index - currentSlide) * 100}%)`),
+  );
+};
+const activateCurrentDot = function () {
+  document.querySelectorAll('.dots__dot').forEach((dot) => {
+    dot.classList.remove('dots__dot--active');
+  });
+  document
+    .querySelector(`.dots__dot[data-slide="${currentSlide}"]`)
+    .classList.add('dots__dot--active');
+};
+const nextSlide = function () {
+  selectSlide(currentSlide === maxSlide ? minSlide : currentSlide + 1);
+};
+const prevSlide = function () {
+  selectSlide(currentSlide === minSlide ? maxSlide : currentSlide - 1);
+};
+const createDots = function () {
+  slides.forEach(function (_, index) {
+    dotContainer.insertAdjacentHTML(
+      'beforeend',
+      `<button class="dots__dot" data-slide="${index}"></button>`,
+    );
+  });
+};
+
+createDots();
+selectSlide();
+btnRight.addEventListener('click', nextSlide);
+btnLeft.addEventListener('click', prevSlide);
+document.addEventListener('keydown', function ({ key: k }) {
+  k === 'ArrowRight' && nextSlide();
+  k === 'ArrowLeft' && prevSlide();
+});
+dotContainer.addEventListener('click', function ({ target: t }) {
+  t.classList.contains('dots__dot') && selectSlide(Number(t.dataset.slide));
+});
+
+//////////////////////////////////////////////////////////
+//////////////////////// Examples ////////////////////////
+//////////////////////////////////////////////////////////
 
 // console.log(document.documentElement);
 // console.log(document.head);
@@ -213,7 +293,7 @@ allSections.forEach(function (section) {
 
 // console.log(logo.dataset.versionNumber);
 
-// Classes
+// // Classes
 
 // logo.classList.add('a', 'b');
 // logo.classList.remove('a', 'b');
@@ -229,10 +309,10 @@ allSections.forEach(function (section) {
 // const btnScrollTo = document.querySelector('.btn--scroll-to');
 // const section1 = document.querySelector('#section--1');
 
-// btnScrollTo.addEventListener('click', function (e) {
+// btnScrollTo.addEventListener('click', function ({target: t}) {
 //   const section1Coords = section1.getBoundingClientRect();
 //   console.log(section1Coords);
-//   console.log(e.target.getBoundingClientRect());
+//   console.log(t.getBoundingClientRect());
 //   console.log('Текущее прокручивание: x, y', window.scrollX, window.scrollY);
 //   console.log(
 //     'Ширина и высота viewport',
@@ -293,7 +373,7 @@ allSections.forEach(function (section) {
 //   .addEventListener('click', backgroundRandom /*, true*/);
 // document.querySelector('body').addEventListener('click', backgroundRandom);
 
-// DOM traversing
+// // DOM traversing
 
 // const h1 = document.querySelector('h1');
 
@@ -320,3 +400,19 @@ allSections.forEach(function (section) {
 // console.log(h2.nextElementSibling);
 
 // console.log(h1.parentElement.children);
+
+// Lifecycle DOM events
+
+// document.addEventListener('DOMContentLoaded', function (e) {
+//   console.log('Дерево DOM создано!', e);
+// });
+
+// window.addEventListener('load', function (e) {
+//   console.log('Страница полностью загружена', e);
+// });
+
+// window.addEventListener('beforeunload', function (e) {
+//   e.preventDefault();
+//   console.log(e);
+//   e.returnValue = '';
+// });
