@@ -3,6 +3,7 @@
 const header = document.querySelector('.header');
 const navLinks = document.querySelectorAll('.main-nav-link');
 
+const mainNav = document.querySelector('.main-nav');
 const mainNavList = document.querySelector('.main-nav-list');
 const heroTextBox = document.querySelector('.hero-textbox');
 const logos = document.querySelectorAll('.logo');
@@ -12,6 +13,7 @@ const sectionHowContainerGrid = document.querySelector(
   '.section-how .container.grid',
 );
 const accordion = document.querySelector('.accordion');
+const sectionHero = document.querySelector('.section-hero');
 const sectionsNotHero = document.querySelectorAll('section:not(.section-hero)');
 const carousel = document.querySelector('.carousel');
 const carouselSlides = document.querySelectorAll('.carousel-slide');
@@ -70,38 +72,28 @@ sectionHowContainerGrid.addEventListener('click', function (e) {
 
 // 3
 
-// 4
-
 accordion.addEventListener('click', function (e) {
   e.target.closest('.accordion-item')?.classList.toggle('open');
 });
 
-// 5
+// 4
 
-// 6
-
-const loadImages = function (entries, observer) {
+const getStickyNav = function (entries) {
   const entry = entries[0];
   if (!entry.isIntersecting) {
-    return;
+    document.body.classList.add('sticky');
+  } else {
+    document.body.classList.remove('sticky');
   }
-  const target = entry.target;
-  target.querySelectorAll('img').forEach((img) => {
-    img.src = img.dataset.src;
-  });
-  observer.unobserve(target);
 };
-const lazyImagesObserver = new IntersectionObserver(loadImages, {
+const observer = new IntersectionObserver(getStickyNav, {
   root: null,
-  threshold: 0.1,
-  rootMargin: '100px',
+  threshold: 0,
+  rootMargin: `-80px`,
 });
+observer.observe(sectionHero);
 
-sectionsNotHero.forEach((section) => {
-  lazyImagesObserver.observe(section);
-});
-
-// 7
+// 5
 
 const minSlide = 0;
 const maxSlide = carouselSlides.length - 1;
@@ -154,7 +146,7 @@ dotContainer.addEventListener('click', function (e) {
   t.classList.contains('dot') && selectSlide(Number(t.dataset.slide));
 });
 
-// 8
+// 6
 
 const logosMin = 0;
 const logosMax = logosImgs.length - 1;
@@ -163,17 +155,27 @@ let logosImgClick;
 const getRand = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 const getRandomRGBA = () =>
-  `rgb(${getRand(0, 255)}, ${getRand(0, 255)}, ${getRand(0, 255)}, 0.5)`;
+  `rgba(${getRand(0, 255)}, ${getRand(0, 255)}, ${getRand(0, 255)}, 0.5)`;
 
-logoContainer.addEventListener('click', function (e) {
-  const target = e.target;
+logoContainer.addEventListener('click', function ({ target }) {
   if (target.tagName !== 'IMG' || (logosImgClick && logosImgClick !== target)) {
     return;
   }
   target.style.backgroundColor = '';
   logosImgClick = logosImgs[getRand(logosMin, logosMax)];
   logosImgClick.style.backgroundColor = getRandomRGBA();
+});
+
+// *
+
+const loadImages = function () {
+  this.querySelectorAll('img').forEach((img) => {
+    img.src = img.dataset.src;
+  });
+};
+sectionsNotHero.forEach((section, index) => {
+  setTimeout(loadImages.bind(section), index * 2000);
 });
