@@ -172,10 +172,15 @@ logoContainer.addEventListener('click', function ({ target }) {
 // *
 
 const loadImages = function () {
-  this.querySelectorAll('img').forEach((img) => {
+  this.forEach((img) => {
     img.src = img.dataset.src;
   });
 };
-sectionsNotHero.forEach((section, index) => {
-  setTimeout(loadImages.bind(section), index * 2000);
+let sectionNumber = 0;
+sectionsNotHero.forEach((section) => {
+  const imgs = section.querySelectorAll('img');
+  if (imgs.length <= 0) {
+    return;
+  }
+  setTimeout(loadImages.bind(imgs), sectionNumber++ * 2000);
 });
