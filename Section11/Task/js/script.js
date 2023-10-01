@@ -80,11 +80,7 @@ accordion.addEventListener('click', function (e) {
 
 const getStickyNav = function (entries) {
   const entry = entries[0];
-  if (!entry.isIntersecting) {
-    document.body.classList.add('sticky');
-  } else {
-    document.body.classList.remove('sticky');
-  }
+  document.body.classList.toggle('sticky', !entry.isIntersecting);
 };
 const observer = new IntersectionObserver(getStickyNav, {
   root: null,
