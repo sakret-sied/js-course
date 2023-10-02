@@ -22,8 +22,6 @@ class Car {
 }
 
 const honda = new Car('Honda', 120);
-const bmw = new Car('BMW', 150);
-
 honda
   .accelerate()
   .accelerate()
@@ -33,6 +31,8 @@ honda
   .break()
   .accelerate()
   .break();
+
+const bmw = new Car('BMW', 150);
 bmw
   .accelerate()
   .accelerate()
