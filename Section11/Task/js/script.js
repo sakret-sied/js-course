@@ -144,26 +144,29 @@ dotContainer.addEventListener('click', function (e) {
 
 // 6
 
-const logosMin = 0;
-const logosMax = logosImgs.length - 1;
-let logosImgClick;
-
-const getRand = function (min, max) {
+const rand = function (min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 const getRandomRGBA = () =>
-  `rgba(${getRand(0, 255)}, ${getRand(0, 255)}, ${getRand(0, 255)}, 0.5)`;
+  `rgba(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)}, 0.5)`;
+const initGame = function () {
+  const imgMin = 0;
+  const imgMax = logosImgs.length - 1;
+  let imgClick;
 
-logoContainer.addEventListener('click', function ({ target }) {
-  if (target.tagName !== 'IMG' || (logosImgClick && logosImgClick !== target)) {
-    return;
-  }
-  target.style.backgroundColor = '';
-  logosImgClick = logosImgs[getRand(logosMin, logosMax)];
-  logosImgClick.style.backgroundColor = getRandomRGBA();
-});
+  return function ({ target }) {
+    if (target.tagName !== 'IMG' || (imgClick && imgClick !== target)) {
+      return;
+    }
+    target.style.backgroundColor = '';
+    imgClick = !imgClick ? target : logosImgs[rand(imgMin, imgMax)];
+    imgClick.style.backgroundColor = getRandomRGBA();
+  };
+};
+
+logoContainer.addEventListener('click', initGame());
 
 // *
 
