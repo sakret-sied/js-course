@@ -91,55 +91,74 @@ observer.observe(sectionHero);
 
 // 5
 
-const minSlide = 0;
-const maxSlide = carouselSlides.length - 1;
-let currentSlide = 0;
+class Slider {
+  constructor() {
+    this.minSlide = 0;
+    this.maxSlide = carouselSlides.length - 1;
+    this.currentSlide = 0;
+  }
+  generateSliderData() {
+    dotContainer.innerHTML = '';
+    carouselSlides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('dot');
+      dot.dataset.slide = index;
+      dotContainer.append(dot);
+    });
+    return this;
+  }
+  nextSlide() {
+    this.selectSlide(
+      this.currentSlide === this.maxSlide
+        ? this.minSlide
+        : this.currentSlide + 1,
+    );
+    return this;
+  }
+  prevSlide() {
+    this.selectSlide(
+      this.currentSlide === this.minSlide
+        ? this.maxSlide
+        : this.currentSlide - 1,
+    );
+    return this;
+  }
+  selectSlide(slide = 0) {
+    this.currentSlide = slide;
+    this.moveToSlide();
+    this.activateCurrentDot();
+    return this;
+  }
+  moveToSlide() {
+    carouselSlides.forEach(
+      (s, index) =>
+        (s.style.transform = `translateX(${
+          (index - this.currentSlide) * 100
+        }%)`),
+    );
+    return this;
+  }
+  activateCurrentDot() {
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((dot) => {
+      dot.classList.remove('dot-fill');
+    });
+    dots[this.currentSlide].classList.add('dot-fill');
+    return this;
+  }
+}
 
-const generateSliderData = function () {
-  dotContainer.innerHTML = '';
-  carouselSlides.forEach((_, index) => {
-    const dot = document.createElement('div');
-    dot.classList.add('dot');
-    dot.dataset.slide = index;
-    dotContainer.append(dot);
-  });
-};
-const selectSlide = function (slide = 0) {
-  currentSlide = slide;
-  moveToSlide();
-  activateCurrentDot();
-};
-const moveToSlide = function () {
-  carouselSlides.forEach(
-    (s, index) =>
-      (s.style.transform = `translateX(${(index - currentSlide) * 100}%)`),
-  );
-};
-const activateCurrentDot = function () {
-  const dots = document.querySelectorAll('.dot');
-  dots.forEach((dot) => {
-    dot.classList.remove('dot-fill');
-  });
-  dots[currentSlide].classList.add('dot-fill');
-};
-const nextSlide = function () {
-  selectSlide(currentSlide === maxSlide ? minSlide : currentSlide + 1);
-};
-const prevSlide = function () {
-  selectSlide(currentSlide === minSlide ? maxSlide : currentSlide - 1);
-};
-
-generateSliderData();
-selectSlide();
-carouselBtnRight.addEventListener('click', nextSlide);
-carouselBtnLeft.addEventListener('click', prevSlide);
+const slider = new Slider();
+slider.generateSliderData().selectSlide();
+carouselBtnRight.addEventListener('click', slider.nextSlide.bind(slider));
+carouselBtnLeft.addEventListener('click', slider.nextSlide.bind(slider));
 document.addEventListener('keydown', function ({ key: k }) {
-  k === 'ArrowRight' && nextSlide();
-  k === 'ArrowLeft' && prevSlide();
+  k === 'ArrowRight' && slider.nextSlide();
+  k === 'ArrowLeft' && slider.prevSlide();
 });
 dotContainer.addEventListener('click', function (e) {
-  const t = e.target;
-  t.classList.contains('dot') && selectSlide(Number(t.dataset.slide));
+  e.target.classList.contains('dot') &&
+    slider.selectSlide(Number(e.target.dataset.slide));
 });
 
 // 6
@@ -175,11 +194,14 @@ const loadImages = function () {
     img.src = img.dataset.src;
   });
 };
-let sectionNumber = 0;
-sectionsNotHero.forEach((section) => {
-  const imgs = section.querySelectorAll('img');
-  if (imgs.length <= 0) {
-    return;
-  }
-  setTimeout(loadImages.bind(imgs), sectionNumber++ * 2000);
-});
+const lazyLoad = function () {
+  let sectionNumber = 0;
+  sectionsNotHero.forEach((section) => {
+    const imgs = section.querySelectorAll('img');
+    if (imgs.length <= 0) {
+      return;
+    }
+    setTimeout(loadImages.bind(imgs), sectionNumber++ * 2000);
+  });
+};
+lazyLoad();
