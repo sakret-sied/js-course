@@ -14,17 +14,17 @@ class Person {
     console.log(
       `${this.name} is a ${this.calcAge()}-year old ${this.job} and he has ${
         this.hasDriverLicense ? 'a' : 'no'
-      } driver license`
+      } driver license`,
     );
   }
 }
 
-const youra = new Person(
-  'YouRa',
+const danya = new Person(
+  'DaNya',
   'Allakhverdov',
   1974,
   'programming instructor',
   'Irina',
-  'Michael'
+  'Michael',
 );
-youra.log();
+danya.log();

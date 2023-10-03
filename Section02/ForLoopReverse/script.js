@@ -1,5 +1,5 @@
-const youra = [
-  'YouRa',
+const danya = [
+  'DaNya',
   'Allakhverdov',
   1974,
   'developer',
@@ -7,15 +7,15 @@ const youra = [
   false,
 ];
 
-loopFor: for (let i = youra.length - 1; i >= 0; i--) {
-  const elemType = typeof youra[i];
+loopFor: for (let i = danya.length - 1; i >= 0; i--) {
+  const elemType = typeof danya[i];
   switch (elemType) {
     case 'string':
       continue loopFor;
     case 'object':
       break loopFor;
     default:
-      console.log(youra[i], typeof youra[i]);
+      console.log(danya[i], typeof danya[i]);
   }
 }
 

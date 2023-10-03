@@ -21,7 +21,7 @@ getAgeArrow(2001);
 var firstName = 'Jack';
 
 const user187 = {
-  firstName: 'YouRa',
+  firstName: 'DaNya',
   birthYear: 1974,
   getAge: function () {
     console.log(new Date().getFullYear() - this.birthYear);

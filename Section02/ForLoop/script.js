@@ -1,5 +1,5 @@
-const youra = [
-  'YouRa',
+const danya = [
+  'DaNya',
   'Allakhverdov',
   1974,
   'developer',
@@ -8,9 +8,9 @@ const youra = [
 ];
 
 // const types = [];
-// for (let i = 0; i < youra.length; i++) {
-//   console.log(youra[i], typeof youra[i]);
-//   types.push(typeof youra[i]);
+// for (let i = 0; i < danya.length; i++) {
+//   console.log(danya[i], typeof danya[i]);
+//   types.push(typeof danya[i]);
 // }
 // console.log(types);
 
@@ -23,14 +23,14 @@ const youra = [
 
 // continue & break
 
-loopFor: for (let i = 0; i < youra.length; i++) {
-  const elemType = typeof youra[i];
+loopFor: for (let i = 0; i < danya.length; i++) {
+  const elemType = typeof danya[i];
   switch (elemType) {
     case 'string':
       continue loopFor;
     case 'object':
       break loopFor;
     default:
-      console.log(youra[i], typeof youra[i]);
+      console.log(danya[i], typeof danya[i]);
   }
 }

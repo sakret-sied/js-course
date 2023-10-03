@@ -4,7 +4,7 @@ console.log(firstName);
 // console.log(job);
 // console.log(birthYear);
 
-var firstName = 'YouRa';
+var firstName = 'DaNya';
 let job = 'programmer';
 const birthYear = 1974;
 

@@ -30,5 +30,5 @@ function getAge(birthYear) {
   return age;
 }
 
-const firstName = 'YouRa';
+const firstName = 'DaNya';
 console.log(getAge(1974));

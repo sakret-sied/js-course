@@ -2,9 +2,9 @@
 
 // Split
 
-console.log('My+name+is+YouRa'.split('+'));
-console.log('YouRa Allakhverdov'.split(' '));
-const [firstName, lastName] = 'YouRa Allakhverdov'.split(' ');
+console.log('My+name+is+DaNya'.split('+'));
+console.log('DaNya Allakhverdov'.split(' '));
+const [firstName, lastName] = 'DaNya Allakhverdov'.split(' ');
 console.log(firstName, lastName);
 
 // Join
@@ -21,7 +21,7 @@ const capitalizeName = function (name) {
   console.log(namesCapitalize.join(' '));
 };
 
-capitalizeName('youra allakhverdov');
+capitalizeName('danya allakhverdov');
 capitalizeName('jack white tiger jr.');
 
 // Padding

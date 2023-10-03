@@ -1,9 +1,9 @@
 const person = {
-  name: 'YouRa',
+  name: 'DaNya',
   lastName: 'Allakhverdov',
   birthYear: 1974,
   job: 'programming instructor',
-  family: { wife: 'Irina', child: 'Michael', me: 'YouRa' },
+  family: { wife: 'Irina', child: 'Michael', me: 'DaNya' },
 };
 console.log(person);
 
@@ -13,5 +13,5 @@ console.log(person[property] ?? 'GTFO');
 const familyKeys = Object.keys(person.family);
 const familyValues = Object.values(person.family);
 console.log(
-  `${person.name} has ${familyKeys.length} and the first one is ${familyValues[0]}`
+  `${person.name} has ${familyKeys.length} and the first one is ${familyValues[0]}`,
 );
