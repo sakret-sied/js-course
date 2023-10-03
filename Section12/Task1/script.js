@@ -6,6 +6,14 @@ class Car {
     this.speed = speed;
   }
 
+  get speedMph() {
+    return Math.round(this.speed / 1.6);
+  }
+
+  set speedMph(speed) {
+    this.speed = Math.round(speed * 1.6);
+  }
+
   accelerate() {
     return this.changeSpeed(5);
   }
@@ -16,7 +24,7 @@ class Car {
 
   changeSpeed(by) {
     this.speed += by;
-    console.log(this);
+    console.log(`${this.name} ${this.speed}`);
     return this;
   }
 }
@@ -44,3 +52,11 @@ bmw
   .accelerate()
   .accelerate()
   .accelerate();
+
+const delorean = new Car('Delorean', 0);
+while (delorean.speedMph < 88) {
+  console.log(delorean.accelerate().speedMph);
+}
+console.log('Back To The Future');
+delorean.speedMph = 88;
+console.log(delorean.speed);
