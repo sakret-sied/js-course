@@ -1,5 +1,7 @@
 'use strict';
 
+// // Function
+
 // const Person = function (firstName, birthYear) {
 //   this.firstName = firstName;
 //   this.birthYear = birthYear;
@@ -35,57 +37,89 @@
 
 // console.dir(Student.prototype.constructor);
 
-class Person {
-  constructor(fullName, birthYear) {
-    this.fullName = fullName;
-    this.birthYear = birthYear;
-  }
+// // ES 6
 
-  get age() {
-    return new Date().getFullYear() - this.birthYear;
-  }
+// class Person {
+//   constructor(fullName, birthYear) {
+//     this.fullName = fullName;
+//     this.birthYear = birthYear;
+//   }
 
-  set age(value) {
-    this.birthYear = new Date().getFullYear() - value;
-  }
+//   get age() {
+//     return new Date().getFullYear() - this.birthYear;
+//   }
 
-  get fullName() {
-    return this._fullName;
-  }
+//   set age(value) {
+//     this.birthYear = new Date().getFullYear() - value;
+//   }
 
-  set fullName(personName) {
-    if (personName.includes(' ')) {
-      this._fullName = personName;
-    } else {
-      console.log('This is not full name.');
-    }
-  }
+//   get fullName() {
+//     return this._fullName;
+//   }
 
+//   set fullName(personName) {
+//     if (personName.includes(' ')) {
+//       this._fullName = personName;
+//     } else {
+//       console.log('This is not full name.');
+//     }
+//   }
+
+//   printAge() {
+//     console.log(this.age);
+//   }
+
+//   greet() {
+//     console.log(`Hello! My name is ${this.firstName}`);
+//   }
+
+//   static highFive() {
+//     console.log('High five!');
+//   }
+// }
+
+// class Student extends Person {
+//   constructor(fullName, birthYear, dept) {
+//     super(fullName, birthYear);
+//     this.dept = dept;
+//   }
+//   greet() {
+//     console.log(
+//       `My name is ${this.fullName} and I study at the "${this.dept}" departament.`,
+//     );
+//   }
+// }
+
+// const jack = new Student('Jack White', 2010, 'Programming');
+// console.log(jack);
+// jack.greet();
+
+// Object.create()
+
+const PersonProto = {
   printAge() {
-    console.log(this.age);
-  }
+    console.log(new Date().getFullYear() - this.birthYear);
+  },
 
-  greet() {
-    console.log(`Hello! My name is ${this.firstName}`);
-  }
+  initPerson(firstName, birthYear) {
+    this.firstName = firstName;
+    this.birthYear = birthYear;
+  },
+};
 
-  static highFive() {
-    console.log('High five!');
-  }
-}
+const StudentProto = Object.create(PersonProto);
+StudentProto.initStudent = function (firstName, birthYear, dept) {
+  PersonProto.initPerson.call(this, firstName, birthYear);
+  this.dept = dept;
+};
 
-class Student extends Person {
-  constructor(fullName, birthYear, dept) {
-    super(fullName, birthYear);
-    this.dept = dept;
-  }
-  greet() {
-    console.log(
-      `My name is ${this.fullName} and I study at the "${this.dept}" departament.`,
-    );
-  }
-}
+StudentProto.introduce = function () {
+  console.log(
+    `My name is ${this.firstName} and I study at the "${this.dept}" departament.`,
+  );
+};
 
-const jack = new Student('Jack White', 2010, 'Programming');
-console.log(jack);
-jack.greet();
+const jack = Object.create(StudentProto);
+jack.initStudent('Jack', 2003, 'Programming');
+jack.introduce();
+jack.printAge();
