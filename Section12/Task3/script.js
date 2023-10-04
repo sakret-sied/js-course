@@ -40,13 +40,19 @@ class ElectricCar extends Car {
   }
 
   chargeBettery(chargeLevel) {
-    this.battery = chargeLevel > this.battery ? chargeLevel : this.battery;
+    this.battery =
+      chargeLevel > this.battery
+        ? chargeLevel >= 100
+          ? 100
+          : chargeLevel
+        : this.battery;
     return this;
   }
 
   accelerate() {
     if (this.battery <= 0) {
-      return (this.speed = 0);
+      this.speed = 0;
+      return this;
     }
     this.battery -= 1;
     return this.changeSpeed(10);
@@ -65,6 +71,6 @@ tesla
   .accelerate()
   .accelerate()
   .accelerate()
-  .chargeBettery(70)
+  .chargeBettery(170)
   .accelerate()
   .accelerate();
