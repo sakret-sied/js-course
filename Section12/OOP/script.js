@@ -14,16 +14,16 @@ class Person {
     this.birthYear = new Date().getFullYear() - value;
   }
 
+  get fullName() {
+    return this._fullName;
+  }
+
   set fullName(personName) {
     if (personName.includes(' ')) {
       this._fullName = personName;
     } else {
       console.log('This is not full name.');
     }
-  }
-
-  get fullName() {
-    return this._fullName;
   }
 
   printAge() {

@@ -24,8 +24,12 @@ class Car {
 
   changeSpeed(by) {
     this.speed += by;
-    console.log(`${this.name} ${this.speed}`);
+    this.printInfo();
     return this;
+  }
+
+  printInfo() {
+    console.log(`${this.name} едет со скоростью ${this.speed} км/ч`);
   }
 }
 
