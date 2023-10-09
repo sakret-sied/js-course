@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
@@ -15,12 +15,12 @@
 
     <link rel="stylesheet" href="style.css" />
 
-    <script defer src="script.js"></script>
+    <script defer type="module" src="script.js"></script>
     <title>Кардио - Карта Твоих Тренировок</title>
   </head>
   <body>
     <div class="sidebar">
-      <img src="/icon.png" alt="icon" class="icon" />
+      <img src="icon.png" alt="icon" class="icon" />
 
       <ul class="workouts">
         <form class="form hidden">
@@ -33,7 +33,7 @@
           </div>
           <div class="form__row">
             <label class="form__label">Расстояние</label>
-            <input class="form__input form__input--distance" placeholder="km" />
+            <input class="form__input form__input--distance" placeholder="км" />
           </div>
           <div class="form__row">
             <label class="form__label">Длительность</label>
@@ -110,15 +110,6 @@
 
       <p class="footer__copyright">
         НЕ ТЕРЯЙ ВРЕМЯ И СТРОЙ СВОЕ БУДУЩЕЕ СЕЙЧАС
-      </p>
-      <p class="footer__copyright">
-        &copy;
-        <a
-          class="footer__link masters-of-code-link"
-          target="_blank"
-          href="https://masters-of-code.com/"
-          >Masters Of Code</a
-        >.
       </p>
     </div>
 
