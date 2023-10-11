@@ -13,11 +13,8 @@ export class Workout {
   }
 
   _setDescription() {
-    this.descrition =
-      this.type === this.running
-        ? `Пробежка ${new Intl.DateTimeFormat('ru-Ru').format(this.date)}`
-        : `Велотренировка ${new Intl.DateTimeFormat('ru-Ru').format(
-            this.date,
-          )}`;
+    this.description =
+      this.type === Workout.running ? 'Пробежка ' : 'Велотренировка ';
+    this.description += new Intl.DateTimeFormat('ru-Ru').format(this.date);
   }
 }

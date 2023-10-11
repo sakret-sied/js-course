@@ -1,13 +1,7 @@
-import {
-  form,
-  inputType,
-  inputDistance,
-  inputDuration,
-  inputTemp,
-  inputClimb,
-} from './main.js';
+import { Elements } from './elements.js';
+import { Factory } from './factory.js';
 import { Helper } from './helper.js';
-import { Workout } from './workout/workout.js';
+import { Workout } from './workouts/workout.js';
 
 export class App {
   #map;
@@ -16,8 +10,8 @@ export class App {
 
   constructor() {
     this._getPosition();
-    form.addEventListener('submit', this._newWorkout.bind(this));
-    inputType.addEventListener('change', this._toggleClimbField);
+    Elements.form.addEventListener('submit', this._newWorkout.bind(this));
+    Elements.inputType.addEventListener('change', this._toggleClimbField);
   }
 
   _getPosition() {
@@ -47,22 +41,26 @@ export class App {
 
   _showForm(e) {
     this.#mapEvent = e;
-    form.classList.remove('hidden');
-    inputDistance.focus();
+    Elements.form.classList.remove('hidden');
+    Elements.inputDistance.focus();
   }
 
   _hideForm() {
-    inputDistance.value =
-      inputDuration.value =
-      inputTemp.value =
-      inputClimb.value =
+    Elements.inputDistance.value =
+      Elements.inputDuration.value =
+      Elements.inputTemp.value =
+      Elements.inputClimb.value =
         '';
-    form.classList.add('hidden');
+    Elements.form.classList.add('hidden');
   }
 
   _toggleClimbField() {
-    inputClimb.closest('.form__row').classList.toggle('form__row--hidden');
-    inputTemp.closest('.form__row').classList.toggle('form__row--hidden');
+    Elements.inputClimb
+      .closest('.form__row')
+      .classList.toggle('form__row--hidden');
+    Elements.inputTemp
+      .closest('.form__row')
+      .classList.toggle('form__row--hidden');
   }
 
   _newWorkout(e) {
@@ -71,26 +69,29 @@ export class App {
     const { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
-    const type = inputType.value;
-    const distance = +inputDistance.value;
-    const duration = +inputDuration.value;
+    const type = Elements.inputType.value;
+    const distance = +Elements.inputDistance.value;
+    const duration = +Elements.inputDuration.value;
 
     if (!Workout.list.includes(type)) {
       return;
     }
 
-    let lastParam, forNumbers, forNumbersPositive;
+    const data = { coords: [lat, lng], distance: distance, duration: duration };
+    let forNumbers, forNumbersPositive;
+    forNumbers = [distance, duration];
+    forNumbersPositive = [...forNumbers];
     switch (type) {
       case Workout.running:
-        lastParam = +inputTemp.value;
-        forNumbersPositive = [distance, duration, lastParam];
+        data.temp = +Elements.inputTemp.value;
+        forNumbers.push(data.temp);
+        forNumbersPositive.push(data.temp);
         break;
       case Workout.cycling:
-        lastParam = +inputClimb.value;
-        forNumbersPositive = [distance, duration];
+        data.climb = +Elements.inputClimb.value;
+        forNumbers.push(data.climb);
         break;
     }
-    forNumbers = [distance, duration, lastParam];
     if (
       !Helper.areNumbers(...forNumbers) ||
       !Helper.areNumbersPositive(...forNumbersPositive)
@@ -98,12 +99,7 @@ export class App {
       return console.warn('Введите положительное число!');
     }
 
-    workout = Helper.getWorkout(type, [
-      [lat, lng],
-      distance,
-      duration,
-      lastParam,
-    ]);
+    workout = Factory.getWorkout(type, data);
 
     this.#workouts.push(workout);
     this._displayWorkout(workout);
@@ -125,7 +121,7 @@ export class App {
       )
       .setPopupContent(
         `${workout.type === Workout.running ? '🏃' : '🚵‍♂️'} ${
-          workout.descrition
+          workout.description
         }`,
       )
       .openPopup();
@@ -134,7 +130,7 @@ export class App {
   _displayWorkoutOnSidebar(workout) {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
-      <h2 class="workout__title">${workout.descrition}</h2>
+      <h2 class="workout__title">${workout.description}</h2>
       <div class="workout__details">
         <span class="workout__icon">${
           workout.type === Workout.running ? '🏃' : '🚵‍♂️'
@@ -181,6 +177,6 @@ export class App {
       `;
     }
 
-    form.insertAdjacentHTML('afterend', html);
+    Elements.form.insertAdjacentHTML('afterend', html);
   }
 }
