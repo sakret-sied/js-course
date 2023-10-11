@@ -10,19 +10,25 @@ export class App {
 
   constructor() {
     this._getPosition();
+    this._getWorkoutsFromLocalStorage();
     Elements.form.addEventListener('submit', this._newWorkout.bind(this));
     Elements.inputType.addEventListener('change', this._toggleClimbField);
+    Elements.containerWorkouts.addEventListener(
+      'click',
+      this._moveToWorkout.bind(this),
+    );
   }
 
   _getPosition() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        this._loadMap.bind(this),
-        function () {
-          console.warn('Невозможно получить ваше местоположение');
-        },
-      );
+    if (!navigator.geolocation) {
+      return;
     }
+    navigator.geolocation.getCurrentPosition(
+      this._loadMap.bind(this),
+      function () {
+        console.warn('Невозможно получить ваше местоположение');
+      },
+    );
   }
 
   _loadMap(position) {
@@ -37,6 +43,9 @@ export class App {
     }).addTo(this.#map);
 
     this.#map.on('click', this._showForm.bind(this));
+    this.#workouts.forEach((workout) => {
+      this._displayWorkout(workout);
+    });
   }
 
   _showForm(e) {
@@ -105,6 +114,7 @@ export class App {
     this._displayWorkout(workout);
     this._displayWorkoutOnSidebar(workout);
     this._hideForm();
+    this._setWorkoutsToLocalStorage();
   }
 
   _displayWorkout(workout) {
@@ -145,6 +155,7 @@ export class App {
       </div>
     
     `;
+
     if (workout.type === Workout.running) {
       html += `
           <div class="workout__details">
@@ -178,5 +189,46 @@ export class App {
     }
 
     Elements.form.insertAdjacentHTML('afterend', html);
+  }
+
+  _moveToWorkout(e) {
+    const workoutElement = e.target.closest('.workout');
+    if (!workoutElement) {
+      return;
+    }
+
+    const workout = this.#workouts.find(
+      (item) => item.id === workoutElement.dataset.id,
+    );
+    this.#map.setView(workout.coords, 13, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+    workout.click();
+  }
+
+  _setWorkoutsToLocalStorage() {
+    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+  }
+
+  _getWorkoutsFromLocalStorage() {
+    const workouts = JSON.parse(localStorage.getItem('workouts'));
+    if (!workouts) {
+      return;
+    }
+
+    console.log(workouts);
+    workouts.forEach((workout) => {
+      this.#workouts.push(Factory.getWorkout(workout.type, workout));
+      this._displayWorkoutOnSidebar(workout);
+    });
+    console.log(this.#workouts);
+  }
+
+  reset() {
+    localStorage.removeItem('workouts');
+    location.reload();
   }
 }

@@ -6,4 +6,12 @@ export class Helper {
   static areNumbersPositive(...numbers) {
     return numbers.every((num) => num > 0);
   }
+
+  static calculatePace(duration, distance) {
+    return duration / distance;
+  }
+
+  static calculateSpeed(distance, duration) {
+    return (distance / duration) * 60;
+  }
 }
