@@ -14,6 +14,7 @@ export default class App {
     this.#getPosition();
     this.#workouts = AppStorage.getWorkouts();
     this.#displayAllSidebars(this.#workouts);
+    Elements.form.reset();
     Elements.clearWorkouts.addEventListener(
       'click',
       this.#clearConfirm.bind(this),
@@ -62,21 +63,18 @@ export default class App {
   }
 
   #hideForm() {
-    Elements.inputClimb.value =
-      Elements.inputDistance.value =
-      Elements.inputDuration.value =
-      Elements.inputTemp.value =
-        '';
+    Elements.form.reset();
     Elements.form.classList.add('hidden');
   }
 
-  #toggleClimb() {
+  #toggleClimb(e) {
+    const isClimb = e.target.value === Workout.cycling;
     Elements.inputClimb
       .closest('.form__row')
-      .classList.toggle('form__row--hidden');
+      .classList.toggle('form__row--hidden', isClimb);
     Elements.inputTemp
       .closest('.form__row')
-      .classList.toggle('form__row--hidden');
+      .classList.toggle('form__row--hidden', !isClimb);
   }
 
   #selectWorkout(e) {
