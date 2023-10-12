@@ -1,7 +1,7 @@
-import { Workout } from './workout.js';
-import { Helper } from '../helper.js';
+import Helper from '../helper.js';
+import Workout from './workout.js';
 
-export class Running extends Workout {
+export default class Running extends Workout {
   type = Workout.running;
 
   constructor(obj) {

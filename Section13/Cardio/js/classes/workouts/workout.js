@@ -1,4 +1,4 @@
-export class Workout {
+export default class Workout {
   static cycling = 'cycling';
   static running = 'running';
   static list = [this.cycling, this.running];
@@ -7,8 +7,8 @@ export class Workout {
 
   constructor(obj) {
     this.id = obj.id ?? (Date.now() + '').slice(-10);
-    this.date = obj.date ? new Date(obj.date) : new Date();
     this.coords = obj.coords;
+    this.date = obj.date ? new Date(obj.date) : new Date();
     this.distance = obj.distance;
     this.duration = obj.duration;
   }

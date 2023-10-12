@@ -1,37 +1,46 @@
-import { Elements } from './elements.js';
-import { Factory } from './factory.js';
-import { Helper } from './helper.js';
-import { Workout } from './workouts/workout.js';
+import AppStorage from './app.storage.js';
+import Elements from './elements.js';
+import Factory from './factory.js';
+import Helper from './helper.js';
+import Workout from './workouts/workout.js';
 
-export class App {
+export default class App {
   #map;
   #mapEvent;
+  #markers = [];
   #workouts = [];
 
   constructor() {
-    this._getPosition();
-    this._getWorkoutsFromLocalStorage();
-    Elements.form.addEventListener('submit', this._newWorkout.bind(this));
-    Elements.inputType.addEventListener('change', this._toggleClimbField);
-    Elements.containerWorkouts.addEventListener(
+    this.#getPosition();
+    this.#workouts = AppStorage.getWorkouts();
+    this.#displayAllSidebars(this.#workouts);
+    Elements.clearWorkouts.addEventListener(
       'click',
-      this._moveToWorkout.bind(this),
+      this.#clearConfirm.bind(this),
     );
+    Elements.form.addEventListener('submit', this.#addWorkout.bind(this));
+    Elements.inputType.addEventListener('change', this.#toggleClimb.bind(this));
+    Elements.popupConfirmClean.addEventListener(
+      'close',
+      this.#cleanWorkouts.bind(this),
+    );
+    Elements.sortWorkouts.addEventListener('change', this.#sort.bind(this));
+    Elements.workouts.addEventListener('click', this.#selectWorkout.bind(this));
   }
 
-  _getPosition() {
+  #getPosition() {
     if (!navigator.geolocation) {
       return;
     }
     navigator.geolocation.getCurrentPosition(
-      this._loadMap.bind(this),
+      this.#loadMap.bind(this),
       function () {
         console.warn('Невозможно получить ваше местоположение');
       },
     );
   }
 
-  _loadMap(position) {
+  #loadMap(position) {
     const { latitude, longitude } = position.coords;
     const coords = [latitude, longitude];
 
@@ -42,28 +51,26 @@ export class App {
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(this.#map);
 
-    this.#map.on('click', this._showForm.bind(this));
-    this.#workouts.forEach((workout) => {
-      this._displayWorkout(workout);
-    });
+    this.#map.on('click', this.#showForm.bind(this));
+    this.#displayAllMarkers(this.#workouts);
   }
 
-  _showForm(e) {
+  #showForm(e) {
     this.#mapEvent = e;
     Elements.form.classList.remove('hidden');
     Elements.inputDistance.focus();
   }
 
-  _hideForm() {
-    Elements.inputDistance.value =
+  #hideForm() {
+    Elements.inputClimb.value =
+      Elements.inputDistance.value =
       Elements.inputDuration.value =
       Elements.inputTemp.value =
-      Elements.inputClimb.value =
         '';
     Elements.form.classList.add('hidden');
   }
 
-  _toggleClimbField() {
+  #toggleClimb() {
     Elements.inputClimb
       .closest('.form__row')
       .classList.toggle('form__row--hidden');
@@ -72,33 +79,43 @@ export class App {
       .classList.toggle('form__row--hidden');
   }
 
-  _newWorkout(e) {
+  #selectWorkout(e) {
+    if (e.target.classList.contains('workout__btn--edit')) {
+      return this.#editWorkout(e);
+    }
+    if (e.target.classList.contains('workout__btn--remove')) {
+      return this.#removeWorkout(e);
+    }
+    this.#moveToMarker(e);
+  }
+
+  #addWorkout(e) {
     e.preventDefault();
 
     const { lat, lng } = this.#mapEvent.latlng;
     let workout;
 
-    const type = Elements.inputType.value;
     const distance = +Elements.inputDistance.value;
     const duration = +Elements.inputDuration.value;
+    const type = Elements.inputType.value;
 
     if (!Workout.list.includes(type)) {
       return;
     }
 
-    const data = { coords: [lat, lng], distance: distance, duration: duration };
+    const obj = { coords: [lat, lng], distance: distance, duration: duration };
     let forNumbers, forNumbersPositive;
     forNumbers = [distance, duration];
     forNumbersPositive = [...forNumbers];
     switch (type) {
       case Workout.running:
-        data.temp = +Elements.inputTemp.value;
-        forNumbers.push(data.temp);
-        forNumbersPositive.push(data.temp);
+        obj.temp = +Elements.inputTemp.value;
+        forNumbers.push(obj.temp);
+        forNumbersPositive.push(obj.temp);
         break;
       case Workout.cycling:
-        data.climb = +Elements.inputClimb.value;
-        forNumbers.push(data.climb);
+        obj.climb = +Elements.inputClimb.value;
+        forNumbers.push(obj.climb);
         break;
     }
     if (
@@ -108,38 +125,100 @@ export class App {
       return console.warn('Введите положительное число!');
     }
 
-    workout = Factory.getWorkout(type, data);
+    workout = Factory.getWorkout(type, obj);
 
     this.#workouts.push(workout);
-    this._displayWorkout(workout);
-    this._displayWorkoutOnSidebar(workout);
-    this._hideForm();
-    this._setWorkoutsToLocalStorage();
+    this.#displayMarker(workout);
+    this.#displaySidebar(workout);
+    this.#hideForm();
+    AppStorage.setWorkouts(this.#workouts);
   }
 
-  _displayWorkout(workout) {
-    L.marker(workout.coords)
-      .addTo(this.#map)
-      .bindPopup(
-        L.popup({
-          maxWidth: 200,
-          minWidth: 100,
-          autoClose: false,
-          closeOnClick: false,
-          className: `${workout.type}-popup`,
-        }),
-      )
-      .setPopupContent(
-        `${workout.type === Workout.running ? '🏃' : '🚵‍♂️'} ${
-          workout.description
-        }`,
-      )
-      .openPopup();
+  #editWorkout() {
+    console.log('edit');
+    return;
+    Elements.inputDistance.focus();
+
+    Elements.inputDistance.value = workout.distance;
+    Elements.inputDuration.value = workout.duration;
+    Elements.inputType.value = workout.type;
+
+    switch (workout.type) {
+      case Workout.running:
+        Elements.inputTemp.value = workout.temp;
+        break;
+      case Workout.cycling:
+        Elements.inputClimb.value = workout.climb;
+        break;
+    }
   }
 
-  _displayWorkoutOnSidebar(workout) {
+  #removeWorkout(e) {
+    const liWorkout = e.target.closest('li.workout');
+
+    const workout = this.#workouts.find(
+      (workout) => workout.id === liWorkout.dataset.id,
+    );
+    if (workout) {
+      this.#workouts.splice(this.#workouts.indexOf(workout), 1);
+      AppStorage.setWorkouts(this.#workouts);
+    }
+
+    const marker = this.#markers.find(
+      (marker) => marker.id === liWorkout.dataset.id,
+    );
+    if (marker) {
+      this.#markers.splice(this.#markers.indexOf(marker), 1);
+      this.#map.removeLayer(marker.obj);
+    }
+
+    liWorkout.remove();
+  }
+
+  #cleanWorkouts() {
+    if (Elements.popupConfirmClean.returnValue !== 'ok') {
+      return;
+    }
+
+    this.#markers.forEach(({ obj }) => this.#map.removeLayer(obj));
+    this.#markers = [];
+
+    this.#workouts = [];
+    this.#displayAllSidebars(this.#workouts);
+
+    AppStorage.removeWorkouts();
+  }
+
+  #moveToMarker(e) {
+    const workoutElement = e.target.closest('.workout');
+    if (!workoutElement) {
+      return;
+    }
+
+    const workout = this.#workouts.find(
+      (item) => item.id === workoutElement.dataset.id,
+    );
+    this.#map.setView(workout.coords, 13, {
+      animate: true,
+      pan: {
+        duration: 1,
+      },
+    });
+    workout.click();
+  }
+
+  #displayAllSidebars(workouts) {
+    document
+      .querySelectorAll('li.workout')
+      .forEach((workout) => workout.remove());
+    workouts.forEach((workout) => this.#displaySidebar(workout));
+  }
+
+  #displaySidebar(workout) {
     let html = `
     <li class="workout workout--${workout.type}" data-id="${workout.id}">
+      <button class="workout__btn workout__btn--edit">✏️</button>
+      <button class="workout__btn workout__btn--remove">❌</button>
       <h2 class="workout__title">${workout.description}</h2>
       <div class="workout__details">
         <span class="workout__icon">${
@@ -191,44 +270,48 @@ export class App {
     Elements.form.insertAdjacentHTML('afterend', html);
   }
 
-  _moveToWorkout(e) {
-    const workoutElement = e.target.closest('.workout');
-    if (!workoutElement) {
-      return;
-    }
-
-    const workout = this.#workouts.find(
-      (item) => item.id === workoutElement.dataset.id,
-    );
-    this.#map.setView(workout.coords, 13, {
-      animate: true,
-      pan: {
-        duration: 1,
-      },
-    });
-    workout.click();
-  }
-
-  _setWorkoutsToLocalStorage() {
-    localStorage.setItem('workouts', JSON.stringify(this.#workouts));
-  }
-
-  _getWorkoutsFromLocalStorage() {
-    const workouts = JSON.parse(localStorage.getItem('workouts'));
-    if (!workouts) {
-      return;
-    }
-
-    console.log(workouts);
+  #displayAllMarkers(workouts) {
     workouts.forEach((workout) => {
-      this.#workouts.push(Factory.getWorkout(workout.type, workout));
-      this._displayWorkoutOnSidebar(workout);
+      this.#displayMarker(workout);
     });
-    console.log(this.#workouts);
   }
 
-  reset() {
-    localStorage.removeItem('workouts');
-    location.reload();
+  #displayMarker(workout) {
+    const marker = L.marker(workout.coords);
+    this.#markers.push({ id: workout.id, obj: marker });
+    marker
+      .addTo(this.#map)
+      .bindPopup(
+        L.popup({
+          maxWidth: 200,
+          minWidth: 100,
+          autoClose: false,
+          closeOnClick: false,
+          className: `${workout.type}-popup`,
+        }),
+      )
+      .setPopupContent(
+        `${workout.type === Workout.running ? '🏃' : '🚵‍♂️'} ${
+          workout.description
+        }`,
+      )
+      .openPopup();
+  }
+
+  #clearConfirm() {
+    Elements.popupConfirmClean.showModal();
+  }
+
+  #sort(e) {
+    const prop = e.target.value;
+    const workouts = this.#workouts.sort((x, y) => {
+      switch (prop) {
+        case 'type':
+          return x[prop].localeCompare(y[prop]);
+        default:
+          return x[prop] - y[prop];
+      }
+    });
+    this.#displayAllSidebars(workouts);
   }
 }

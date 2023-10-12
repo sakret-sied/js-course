@@ -1,4 +1,4 @@
-export class Helper {
+export default class Helper {
   static areNumbers(...numbers) {
     return numbers.every((num) => Number.isFinite(num));
   }

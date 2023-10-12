@@ -4,27 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="shortcut icon" type="image/png" href="/icon.png" />
+    <link rel="shortcut icon" type="image/png" href="icon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
 
+    <link rel="stylesheet" href="js/leaflet/leaflet.css" />
     <link rel="stylesheet" href="style.css" />
 
-    <link rel="stylesheet" href="leaflet/leaflet.css" />
-    <script defer src="leaflet/leaflet.js"></script>
-
+    <script defer src="js/leaflet/leaflet.js"></script>
     <script defer type="module" src="js/main.js"></script>
 
     <title>Кардио - Карта Твоих Тренировок</title>
   </head>
   <body>
+    <dialog id="popup-confirm-clean" class="popup-confirm">
+      <h2>Удалить все элементы?</h2>
+      <form class="popup-confirm__form">
+        <button
+          autofocus
+          value="ok"
+          class="btn popup-confirm__btn popup-confirm__btn--ok"
+          formmethod="dialog"
+        >
+          Да
+        </button>
+        <button
+          value="cancel"
+          class="btn popup-confirm__btn popup-confirm__btn--close"
+          formmethod="dialog"
+        >
+          Отмена
+        </button>
+      </form>
+    </dialog>
+
     <div class="sidebar">
       <img src="icon.png" alt="icon" class="icon" />
+      <div class="sidebar__controls">
+        <div class="sidebar__sort">
+          <label for="workouts-sort">Сортировка:</label>
+          <select
+            name="workouts-sort"
+            id="workouts-sort"
+            class="sidebar__sort--select"
+          >
+            <option value="" selected disabled hidden>
+              -- выберите опцию --
+            </option>
+            <option value="date">По дате</option>
+            <option value="type">По типу тренировки</option>
+            <option value="duration">По продолжительности</option>
+            <option value="distance">По пройденной дистанции</option>
+          </select>
+        </div>
+        <button id="workouts-clear" class="btn sidebar__btn--delete-all">
+          Удалить все тренировки
+        </button>
+      </div>
 
       <ul class="workouts">
         <form class="form hidden">
@@ -37,7 +78,7 @@
           </div>
           <div class="form__row">
             <label class="form__label">Расстояние</label>
-            <input class="form__input form__input--distance" placeholder="км" />
+            <input class="form__input form__input--distance" placeholder="km" />
           </div>
           <div class="form__row">
             <label class="form__label">Длительность</label>
@@ -60,61 +101,9 @@
               placeholder="метров"
             />
           </div>
-          <button class="form__btn">OK</button>
+          <button class="form__btn hidden">OK</button>
         </form>
-
-        <!-- <li class="workout workout--running" data-id="1234567890">
-          <h2 class="workout__title">Пробежка 15.05.2021</h2>
-          <div class="workout__details">
-            <span class="workout__icon">🏃</span>
-            <span class="workout__value">5.0</span>
-            <span class="workout__unit">км</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⏱</span>
-            <span class="workout__value">21</span>
-            <span class="workout__unit">мин</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">📏⏱</span>
-            <span class="workout__value">238</span>
-            <span class="workout__unit">м/мин</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">👟⏱</span>
-            <span class="workout__value">340</span>
-            <span class="workout__unit">шаг/мин</span>
-          </div>
-        </li>
-
-        <li class="workout workout--cycling" data-id="1234567891">
-          <h2 class="workout__title">Велотренировка 07.05.2021</h2>
-          <div class="workout__details">
-            <span class="workout__icon">🚵‍♂️</span>
-            <span class="workout__value">25</span>
-            <span class="workout__unit">км</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">⏱</span>
-            <span class="workout__value">91</span>
-            <span class="workout__unit">мин</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">📏⏱</span>
-            <span class="workout__value">17</span>
-            <span class="workout__unit">км/ч</span>
-          </div>
-          <div class="workout__details">
-            <span class="workout__icon">🏔</span>
-            <span class="workout__value">251</span>
-            <span class="workout__unit">м</span>
-          </div>
-        </li> -->
       </ul>
-
-      <p class="footer__copyright">
-        НЕ ТЕРЯЙ ВРЕМЯ И СТРОЙ СВОЕ БУДУЩЕЕ СЕЙЧАС
-      </p>
     </div>
 
     <div id="map"></div>

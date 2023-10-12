@@ -1,14 +1,14 @@
-import { Workout } from './workouts/workout.js';
-import { Cycling } from './workouts/cycling.js';
-import { Running } from './workouts/running.js';
+import Cycling from './workouts/cycling.js';
+import Running from './workouts/running.js';
+import Workout from './workouts/workout.js';
 
-export class Factory {
-  static getWorkout(type, data) {
+export default class Factory {
+  static getWorkout(type, obj) {
     switch (type) {
       case Workout.cycling:
-        return new Cycling(data);
+        return new Cycling(obj);
       case Workout.running:
-        return new Running(data);
+        return new Running(obj);
     }
   }
 }
