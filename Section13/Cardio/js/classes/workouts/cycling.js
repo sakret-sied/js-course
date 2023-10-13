@@ -7,7 +7,7 @@ export default class Cycling extends Workout {
   constructor(obj) {
     super(obj);
     this.climb = obj.climb;
-    this.speed = Helper.calculateSpeed(this.duration, this.distance);
+    this.speed = Helper.calculateSpeed(this.distance, this.duration);
     this._setDescription();
   }
 }

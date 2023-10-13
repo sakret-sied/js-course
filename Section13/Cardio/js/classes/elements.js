@@ -4,6 +4,7 @@ export default class Elements {
   static inputClimb = document.querySelector('.form__input--climb');
   static inputDistance = document.querySelector('.form__input--distance');
   static inputDuration = document.querySelector('.form__input--duration');
+  static inputId = document.querySelector('.form__input--id');
   static inputTemp = document.querySelector('.form__input--temp');
   static inputType = document.querySelector('.form__input--type');
   static popupConfirmClean = document.querySelector('#popup-confirm-clean');

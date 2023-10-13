@@ -12,6 +12,6 @@ export default class Helper {
   }
 
   static calculateSpeed(distance, duration) {
-    return (distance / duration) * 60;
+    return distance / (duration / 60);
   }
 }
