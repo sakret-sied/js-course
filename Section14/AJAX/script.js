@@ -1,7 +1,7 @@
 'use strict';
 
 const btn = document.querySelector('.btn-country');
-const countriesContainer = document.querySelector('.countries');
+const container = document.querySelector('.countries');
 
 const displayCountry = function (data, className = '') {
   const currencies = data.currencies;
@@ -26,18 +26,17 @@ const displayCountry = function (data, className = '') {
     </article>
     `;
 
-  countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.style.opacity = 1;
+  container.insertAdjacentHTML('beforeend', html);
+  container.style.opacity = 1;
 };
 
-const getCountryAndBorder = function (countryName) {
+const getCountryAndNeighbour = function (countryName) {
   const request1 = new XMLHttpRequest();
   request1.open('GET', `https://restcountries.com/v3.1/name/${countryName}`);
   request1.send();
   request1.addEventListener('load', function () {
     const [data1] = JSON.parse(this.responseText);
     displayCountry(data1);
-
     const [firstNeighbour] = data1.borders;
     if (!firstNeighbour) {
       return;
@@ -56,4 +55,4 @@ const getCountryAndBorder = function (countryName) {
   });
 };
 
-getCountryAndBorder('russia');
+getCountryAndNeighbour('russia');

@@ -1,7 +1,7 @@
 'use strict';
 
 const btn = document.querySelector('.btn-country');
-const countriesContainer = document.querySelector('.countries');
+const container = document.querySelector('.countries');
 
 const displayCountry = function (data, className = '') {
   const currencies = data.currencies;
@@ -26,23 +26,53 @@ const displayCountry = function (data, className = '') {
     </article>
     `;
 
-  countriesContainer.insertAdjacentHTML('beforeend', html);
-  countriesContainer.style.opacity = 1;
+  container.insertAdjacentHTML('beforeend', html);
 };
 
-const getCountryAndBorder = function (countryName) {
-  fetch(`https://restcountries.com/v3.1/name/${countryName}`)
-    .then((response) => response.json())
-    .then((data) => {
-      displayCountry(data[0]);
-      const firstNeighbour = data[0].borders[0];
-      if (!firstNeighbour) {
-        return;
-      }
-      return fetch(`https://restcountries.com/v3.1/alpha/${firstNeighbour}`);
-    })
-    .then((data) => data.json())
-    .then((data) => displayCountry(data[0], 'neighbour'));
+const getResponse = async (url, errorMessage = 'Ошибка') => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(errorMessage);
+  }
+  return await response.json();
 };
 
-getCountryAndBorder('russia');
+const displayCountryAndGetNeighbour = (data) => {
+  displayCountry(data[0]);
+  if (!data[0].borders) {
+    throw new Error('Нет соседних стран');
+  }
+  const firstNeighbour = data[0].borders[0];
+  return getResponse(
+    `https://restcountries.com/v3.1/alpha/${firstNeighbour}`,
+    'Нет соседних стран',
+  );
+};
+
+const displayNeighbour = (data) => displayCountry(data[0], 'neighbour');
+
+const displayError = (e) =>
+  container.insertAdjacentText(
+    'beforeend',
+    `Что-то пошло не так: ${e.message}`,
+  );
+
+const showContainer = () => (container.style.opacity = 1);
+
+const hideBtn = () => (btn.style.display = 'none');
+
+const getCountryAndNeighbour = function (countryName) {
+  getResponse(
+    `https://restcountries.com/v3.1/name/${countryName}`,
+    'Страна не найдена',
+  )
+    .then(displayCountryAndGetNeighbour)
+    .then(displayNeighbour)
+    .catch(displayError)
+    .finally(showContainer);
+};
+
+btn.addEventListener('click', function () {
+  hideBtn();
+  getCountryAndNeighbour('russia');
+});
