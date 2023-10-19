@@ -11,8 +11,8 @@ class Country {
       .then((data) => data.json())
       .then((data) => {
         console.log(
-          `You are in ${data.address.city ?? ''}, ${
-            data.address.country ?? ''
+          `You are in ${data.address.city ?? data.address.city_district}, ${
+            data.address.country
           }`,
         );
         this.getCountryAndNeighbourByCode(data.address.country_code);
