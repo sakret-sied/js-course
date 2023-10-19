@@ -1,6 +1,5 @@
 'use strict';
 
-const btn = document.querySelector('.btn-country');
 const container = document.querySelector('.countries');
 
 const displayCountry = function (data, className = '') {

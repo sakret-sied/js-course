@@ -116,5 +116,5 @@ class Country {
 }
 
 Country.btn.addEventListener('click', function () {
-  new Country().getCountryAndNeighbourByCode('ru');
+  new Country().getUserCountry();
 });
