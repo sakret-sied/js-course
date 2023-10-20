@@ -1,7 +1,7 @@
 'use strict';
 
 class ImageLoader {
-  static imageContainer = document.querySelector('.images');
+  static container = document.querySelector('#images-container');
 
   #imgCurrent;
   #imgFolder = '../src/img/';
@@ -27,7 +27,7 @@ class ImageLoader {
     this.#imgCurrent.src = this.#imgFolder + imagePath;
 
     this.#imgCurrent.addEventListener('load', () => {
-      ImageLoader.imageContainer.append(this.#imgCurrent);
+      ImageLoader.container.append(this.#imgCurrent);
       return Promise.resolve(this.#imgCurrent);
     });
 
