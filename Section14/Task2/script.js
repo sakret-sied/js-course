@@ -3,47 +3,47 @@
 class ImageLoader {
   static imageContainer = document.querySelector('.images');
 
-  #img;
+  #imgCurrent;
   #imgFolder = '../src/img/';
 
-  async loadImages(imagePath) {
+  async loadImages() {
     try {
-      await this.createImageElement('image1.jpg');
-      console.log('Первое изображение');
-      await this.wait(2);
-      this.imageHide();
-
-      await this.createImageElement('image2.jpg');
-      console.log('Второе изображение');
-      await this.wait(2);
-      this.imageHide();
+      await this.#loadImage('image1.jpg');
+      await this.#loadImage('image2.jpg');
     } catch (e) {
       console.error(e);
     }
   }
 
-  async createImageElement(imagePath) {
-    this.#img = document.createElement('img');
-    this.#img.src = this.#imgFolder + imagePath;
+  async #loadImage(imagePath) {
+    await this.#createImageElement(imagePath);
+    console.log(imagePath);
+    await this.#wait(2);
+    this.#imageHide();
+  }
 
-    this.#img.addEventListener('load', () => {
-      ImageLoader.imageContainer.append(this.#img);
-      return Promise.resolve(this.#img);
+  async #createImageElement(imagePath) {
+    this.#imgCurrent = document.createElement('img');
+    this.#imgCurrent.src = this.#imgFolder + imagePath;
+
+    this.#imgCurrent.addEventListener('load', () => {
+      ImageLoader.imageContainer.append(this.#imgCurrent);
+      return Promise.resolve(this.#imgCurrent);
     });
 
-    this.#img.addEventListener('error', () => {
+    this.#imgCurrent.addEventListener('error', () => {
       return Promise.reject(new Error('Изображение не найдено'));
     });
   }
 
-  async wait(seconds) {
+  async #wait(seconds) {
     return new Promise(function (resolve) {
       setTimeout(resolve, seconds * 1000);
     });
   }
 
-  imageHide() {
-    this.#img.style.display = 'none';
+  #imageHide() {
+    this.#imgCurrent.style.display = 'none';
   }
 }
 
