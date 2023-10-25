@@ -3,6 +3,7 @@ import Elements from './elements.js';
 import Factory from './factory.js';
 import Helper from './helper.js';
 import Workout from './workouts/workout.js';
+import * as L from '/node_modules/leaflet/dist/leaflet-src.esm.js';
 
 export default class App {
   #map;
