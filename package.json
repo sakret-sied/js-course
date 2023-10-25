@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/SakretSied/JsCourse#readme",
   "dependencies": {
+    "leaflet": "^1.9.4",
     "prettier": "^3.0.3"
   }
 }
