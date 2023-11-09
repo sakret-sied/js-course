@@ -1,22 +1,19 @@
 {
-  "name": "jscourse",
-  "version": "1.0.0",
+  "name": "js-course",
+  "version": "1.14.0",
   "description": "JavaScript course",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SakretSied/JsCourse.git"
+    "url": "git+https://github.com/sakret-sied/js-course.git"
   },
-  "author": "SakretSied",
+  "author": "sakret-sied",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SakretSied/JsCourse/issues"
+    "url": "https://github.com/sakret-sied/js-course/issues"
   },
-  "homepage": "https://github.com/SakretSied/JsCourse#readme",
+  "homepage": "https://github.com/sakret-sied/js-course#readme",
   "dependencies": {
+    "js-little-core": "github:sakret-sied/js-little-core",
     "leaflet": "^1.9.4",
     "prettier": "^3.0.3"
   }
