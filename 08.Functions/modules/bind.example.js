@@ -37,7 +37,7 @@ export default class BindExample extends Module {
     };
     const purchase = document.createElement('button');
     purchase.id = purchase.textContent = 'purchase';
-    this.content.insertAdjacentElement('afterbegin', purchase);
+    this.content.prepend(purchase);
     purchase.addEventListener(
       'click',
       airline1.purchaseAirplane.bind(airline1),

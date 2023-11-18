@@ -8,9 +8,9 @@ export default class ModuleWithImages extends Module {
     const images = document.createElement('div');
     images.id = 'images-container';
     images.classList.add('images');
-    main.insertAdjacentElement('afterbegin', images);
+    main.prepend(images);
 
-    this.content.insertAdjacentElement('afterbegin', main);
+    this.content.prepend(main);
     return this;
   }
 }

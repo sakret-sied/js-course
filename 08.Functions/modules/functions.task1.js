@@ -29,7 +29,7 @@ export default class FunctionsTask1 extends Module {
     };
     const takeSurvey = document.createElement('button');
     takeSurvey.id = takeSurvey.textContent = 'takeSurvey';
-    this.content.insertAdjacentElement('afterbegin', takeSurvey);
+    this.content.prepend(takeSurvey);
 
     takeSurvey.addEventListener('click', survey.logNewAnswer.bind(survey));
 

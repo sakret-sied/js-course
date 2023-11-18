@@ -6,7 +6,7 @@ export default class FunctionsTask2 extends Module {
       const h2 = document.createElement('h2');
       h2.textContent = 'Button';
       h2.style.color = 'orange';
-      obj.content.insertAdjacentElement('afterbegin', h2);
+      obj.content.prepend(h2);
 
       const body = document.querySelector('body');
       body.addEventListener('click', function () {

@@ -8,17 +8,17 @@ export default class ModuleWithCountry extends Module {
     const countries = document.createElement('div');
     countries.id = 'countries-container';
     countries.classList.add('countries');
-    main.insertAdjacentElement('afterbegin', countries);
+    main.prepend(countries);
 
     if (withButton) {
       const button = document.createElement('div');
       button.id = 'btn-country';
       button.classList.add('btn-country');
       button.innerText = 'Где Я?';
-      main.insertAdjacentElement('beforeend', button);
+      main.append(button);
     }
 
-    this.content.insertAdjacentElement('afterbegin', main);
+    this.content.prepend(main);
     return this;
   }
 }
