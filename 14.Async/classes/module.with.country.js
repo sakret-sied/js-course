@@ -14,7 +14,7 @@ export default class ModuleWithCountry extends Module {
       const button = document.createElement('div');
       button.id = 'btn-country';
       button.classList.add('btn-country');
-      button.innerText = 'Где Я?';
+      button.textContent = 'Где Я?';
       main.append(button);
     }
 
